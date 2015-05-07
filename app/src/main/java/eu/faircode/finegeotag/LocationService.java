@@ -56,7 +56,6 @@ public class LocationService extends IntentService {
             PendingIntent pi = PendingIntent.getService(this, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             lm.removeUpdates(pi);
             Log.w(TAG, "Timeout image=" + image_filename);
-            notify(getString(R.string.msg_failed, new File(image_filename).getName()));
         }
     }
 
