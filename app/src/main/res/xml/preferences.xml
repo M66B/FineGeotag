@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
-        android:key="pref_key_storage_settings"
-        android:title="@string/app_name">
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pref_enabled"
-            android:title="@string/pref_enabled" />
-        <ListPreference
-            android:defaultValue="gps"
-            android:key="pref_provider"
-            android:title="@string/pref_provider" />
-        <EditTextPreference
-            android:defaultValue="60"
-            android:inputType="number"
-            android:key="pref_timeout"
-            android:title="@string/pref_timeout" />
-    </PreferenceCategory>
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_enabled"
+        android:title="@string/pref_enabled" />
+    <ListPreference
+        android:defaultValue="gps"
+        android:key="pref_provider"
+        android:title="@string/pref_provider" />
+    <EditTextPreference
+        android:defaultValue="60"
+        android:inputType="number"
+        android:key="pref_timeout"
+        android:title="@string/pref_timeout" />
 </PreferenceScreen>
