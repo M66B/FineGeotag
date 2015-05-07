@@ -7,16 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.location.Criteria;
 import android.location.LocationManager;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.File;
-import java.io.IOException;
 
 public class NewPictureReceiver extends BroadcastReceiver {
     private static final String TAG = "FineGeotag.Receiver";
@@ -32,16 +29,21 @@ public class NewPictureReceiver extends BroadcastReceiver {
             return;
         }
 
-        // Get content
-        Cursor cursor = context.getContentResolver().query(intent.getData(), null, null, null, null);
-        if (!cursor.moveToFirst()) {
-            Log.w(TAG, "No content");
-            return;
-        }
-
         // Get image file name
-        String image_filename = cursor.getString(cursor.getColumnIndex("_data"));
-        Log.w(TAG, "Image=" + image_filename);
+        Cursor cursor = null;
+        String image_filename = null;
+        try {
+            cursor = context.getContentResolver().query(intent.getData(), null, null, null, null);
+            if (!cursor.moveToFirst()) {
+                Log.w(TAG, "No content");
+                return;
+            }
+            image_filename = cursor.getString(cursor.getColumnIndex("_data"));
+            Log.w(TAG, "Image=" + image_filename);
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
 
         // Request location
         Intent locationIntent = new Intent(context, LocationService.class);

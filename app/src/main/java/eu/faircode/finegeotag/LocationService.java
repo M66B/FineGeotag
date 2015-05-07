@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +40,7 @@ public class LocationService extends IntentService {
                     exif.setLocation(location);
                     exif.saveAttributes();
                     Log.w(TAG, "Exif updated image=" + image_filename);
+                    notify(getString(R.string.msg_geotagged, new File(image_filename).getName()));
                 } catch (IOException ex) {
                     Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
                 }
@@ -52,6 +56,16 @@ public class LocationService extends IntentService {
             PendingIntent pi = PendingIntent.getService(this, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             lm.removeUpdates(pi);
             Log.w(TAG, "Timeout image=" + image_filename);
+            notify(getString(R.string.msg_failed, new File(image_filename).getName()));
         }
+    }
+
+    private void notify(final String text) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
