@@ -64,6 +64,5 @@ public class NewPictureReceiver extends BroadcastReceiver {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + timeout * 1000, pia);
         Log.w(TAG, "Set timeout=" + timeout + "s image=" + image_filename);
-
     }
 }
