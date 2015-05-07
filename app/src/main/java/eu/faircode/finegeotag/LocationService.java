@@ -4,16 +4,27 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class LocationService extends IntentService {
     private static final String TAG = "FineGeotag.Service";
@@ -36,18 +47,26 @@ public class LocationService extends IntentService {
 
             if (location != null)
                 try {
+                    // Write Exif
                     ExifInterfaceEx exif = new ExifInterfaceEx(image_filename);
                     exif.setLocation(location);
                     exif.saveAttributes();
                     Log.w(TAG, "Exif updated image=" + image_filename);
-                    notify(getString(R.string.msg_geotagged, new File(image_filename).getName()));
+
+                    // Geocode
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                    if (prefs.getBoolean(ActivitySettings.PREF_TOAST, true)) {
+                        String address = geocode(location);
+                        if (address == null)
+                            address = getString(R.string.msg_geotagged);
+                        notify(image_filename, address);
+                    }
                 } catch (IOException ex) {
                     Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
                 }
 
         } else if (ACTION_ALARM.equals(intent.getAction())) {
             String image_filename = intent.getData().getPath();
-            Log.w(TAG, "Alarm image" + image_filename);
 
             LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             Intent locationIntent = new Intent(this, LocationService.class);
@@ -59,11 +78,41 @@ public class LocationService extends IntentService {
         }
     }
 
-    private void notify(final String text) {
+    private String geocode(Location location) throws IOException {
+        String address = null;
+        if (Geocoder.isPresent()) {
+            Geocoder geocoder = new Geocoder(this);
+            List<Address> listPlace = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            if (listPlace != null && listPlace.size() > 0) {
+                StringBuilder sb = new StringBuilder();
+                for (int l = 0; l < listPlace.get(0).getMaxAddressLineIndex(); l++) {
+                    if (l != 0)
+                        sb.append("\n");
+                    sb.append(listPlace.get(0).getAddressLine(l));
+                }
+                address = sb.toString();
+            }
+        }
+        return address;
+    }
+
+    private void notify(final String image_filename, final String text) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+                LayoutInflater inflater = LayoutInflater.from(LocationService.this);
+                View layout = inflater.inflate(R.layout.geotagged, null);
+
+                ImageView image = (ImageView) layout.findViewById(R.id.image);
+                image.setImageURI(Uri.fromFile(new File(image_filename)));
+                TextView tv = (TextView) layout.findViewById(R.id.text);
+                tv.setText(text);
+
+                Toast toast = new Toast(getApplicationContext());
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
         });
     }

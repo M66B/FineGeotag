@@ -17,6 +17,7 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
     public static final String PREF_ENABLED = "pref_enabled";
     public static final String PREF_PROVIDER = "pref_provider";
     public static final String PREF_TIMEOUT = "pref_timeout";
+    public static final String PREF_TOAST = "pref_toast";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

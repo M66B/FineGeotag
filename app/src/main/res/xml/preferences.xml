@@ -4,6 +4,10 @@
         android:defaultValue="true"
         android:key="pref_enabled"
         android:title="@string/pref_enabled" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_toast"
+        android:title="@string/pref_toast" />
     <ListPreference
         android:defaultValue="gps"
         android:key="pref_provider"
