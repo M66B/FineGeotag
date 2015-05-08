@@ -22,4 +22,11 @@
         android:inputType="number"
         android:key="pref_accuracy"
         android:title="@string/pref_accuracy" />
+    <Preference
+        android:key="pref_version"
+        android:title="@string/pref_version" />
+    <Preference
+        android:key="pref_author"
+        android:summary="@string/summary_author"
+        android:title="@string/pref_author" />
 </PreferenceScreen>

@@ -2,6 +2,8 @@ package eu.faircode.finegeotag;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -20,6 +22,7 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
     public static final String PREF_PROVIDER = "pref_provider";
     public static final String PREF_TIMEOUT = "pref_timeout";
     public static final String PREF_ACCURACY = "pref_accuracy";
+    public static final String PREF_VERSION = "pref_version";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
         ListPreference pref_provider = (ListPreference) findPreference(PREF_PROVIDER);
         Preference pref_timeout = findPreference(PREF_TIMEOUT);
         Preference pref_accurary = findPreference(PREF_ACCURACY);
+        Preference pref_version = findPreference(PREF_VERSION);
 
         // Get provider name/values
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -45,6 +49,13 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
         pref_provider.setSummary(translate(prefs.getString(PREF_PROVIDER, LocationManager.GPS_PROVIDER)));
         pref_timeout.setSummary(getString(R.string.summary_seconds, prefs.getString(PREF_TIMEOUT, null)));
         pref_accurary.setSummary(getString(R.string.summary_meters, prefs.getString(PREF_ACCURACY, null)));
+
+        try {
+            String self = ActivitySettings.class.getPackage().getName();
+            PackageInfo pInfo = getPackageManager().getPackageInfo(self, 0);
+            pref_version.setSummary(pInfo.versionName);
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
     }
 
     private String translate(String provider) {
