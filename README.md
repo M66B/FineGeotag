@@ -1,6 +1,8 @@
 # Fine Geotag
 Automatically geotag photos with a real-time fine location right after they were taken.
 
+The camera application mostly uses the last known location, which could be old and miles away from your current position.
+
 Don't forget to disable getagging of your camera application to prevent interference.
 
 Works only for JPEG pictures.
