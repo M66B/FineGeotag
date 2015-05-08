@@ -28,6 +28,16 @@ WRITE_EXTERNAL_STORAGE: to write [Exif](http://en.wikipedia.org/wiki/Exchangeabl
 
 FineGeotag has no internet permissions, so you don't have to be afraid privacy sensitive information is going anywhere.
 
+# Download
+
+* [GitHub releases](https://github.com/M66B/FineGeotag/releases)
+* [Play store](https://play.google.com/store/apps/details?id=eu.faircode.finegeotag)
+
+# Support
+
+You can [create a GitHub issue](https://github.com/M66B/FineGeotag/issues) for bugs
+or use [this XDA forum](http://forum.xda-developers.com/android/apps-games/20150508-fine-geotag-t3103110) for questions.
+
 # Attribution
 
 The application icon is taken from the [Geotag Icon Project](https://geotagicons.wordpress.com/)
