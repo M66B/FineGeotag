@@ -1,9 +1,11 @@
 # FineGeotag
+<img src="play.png"/>
 Automatically geotag photos with a real-time fine location right after they are taken.
 
 The camera application mostly uses the last known location, which could be old and miles away from your current position.
 
-FineGeotag by default acquires a location in real-time from the GPS and updates the [Exif](http://en.wikipedia.org/wiki/Exchangeable_image_file_format) of the photo taken.
+FineGeotag by default acquires a location in real-time from the GPS receiver
+and updates the [Exif](http://en.wikipedia.org/wiki/Exchangeable_image_file_format) location tags of the photo taken.
 
 Optionally a popup will be shown with a thumbnail of the photo and the [reverse geocoded](http://en.wikipedia.org/wiki/Reverse_geocoding) address
 (note that the Google geocoder needs to be present for geocoding to work).
