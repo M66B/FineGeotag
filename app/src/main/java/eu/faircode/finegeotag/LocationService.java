@@ -76,8 +76,9 @@ public class LocationService extends IntentService {
             }
 
         } else if (ACTION_ALARM.equals(intent.getAction())) {
-            cancelUpdates(image_filename);
             Log.w(TAG, "Timeout image=" + image_filename);
+            cancelUpdates(image_filename);
+            NewPictureReceiver.setBestLastKnownLocation(image_filename, this);
         }
     }
 

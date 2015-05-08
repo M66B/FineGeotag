@@ -52,30 +52,7 @@ public class NewPictureReceiver extends BroadcastReceiver {
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         if (!lm.isProviderEnabled(provider)) {
             Log.w(TAG, "Provider " + provider + " not enabled image=" + image_filename);
-
-            // Get best last known location
-            Location bestLocation = null;
-            for (String fallback : lm.getProviders(true)) {
-                Location location = lm.getLastKnownLocation(fallback);
-                Log.w(TAG, "Last known location=" + location + " fallback=" + fallback + " image=" + image_filename);
-                if (location != null && (bestLocation == null || location.getAccuracy() < bestLocation.getAccuracy()))
-                    bestLocation = location;
-            }
-
-            // Process best last known location
-            if (bestLocation != null) {
-                Log.w(TAG, "Best last known location=" + bestLocation + " image=" + image_filename);
-                try {
-                    // Write Exif
-                    ExifInterfaceEx exif = new ExifInterfaceEx(image_filename);
-                    exif.setLocation(bestLocation);
-                    exif.saveAttributes();
-                    Log.w(TAG, "Exif updated image=" + image_filename);
-                } catch (IOException ex) {
-                    Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
-                }
-            }
-
+            setBestLastKnownLocation(image_filename, context);
             return;
         }
 
@@ -85,7 +62,7 @@ public class NewPictureReceiver extends BroadcastReceiver {
         locationIntent.setData(Uri.fromFile(new File(image_filename)));
         PendingIntent pil = PendingIntent.getService(context, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         lm.requestLocationUpdates(provider, 1000, 1, pil);
-        Log.w(TAG, "Requested locations provider=" + provider + " image" + image_filename);
+        Log.w(TAG, "Requested locations provider=" + provider + " image=" + image_filename);
 
         // Set timeout
         int timeout = Integer.parseInt(prefs.getString(ActivitySettings.PREF_TIMEOUT, "60"));
@@ -96,5 +73,31 @@ public class NewPictureReceiver extends BroadcastReceiver {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + timeout * 1000, pia);
         Log.w(TAG, "Set timeout=" + timeout + "s image=" + image_filename);
+    }
+
+    public static void setBestLastKnownLocation(String image_filename, Context context) {
+        // Get best last known location
+        Location bestLocation = null;
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        for (String fallback : lm.getProviders(true)) {
+            Location location = lm.getLastKnownLocation(fallback);
+            Log.w(TAG, "Last known location=" + location + " fallback=" + fallback + " image=" + image_filename);
+            if (location != null && (bestLocation == null || location.getAccuracy() < bestLocation.getAccuracy()))
+                bestLocation = location;
+        }
+
+        // Process best last known location
+        if (bestLocation != null) {
+            Log.w(TAG, "Best last known location=" + bestLocation + " image=" + image_filename);
+            try {
+                // Write Exif
+                ExifInterfaceEx exif = new ExifInterfaceEx(image_filename);
+                exif.setLocation(bestLocation);
+                exif.saveAttributes();
+                Log.w(TAG, "Exif updated image=" + image_filename);
+            } catch (IOException ex) {
+                Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
+            }
+        }
     }
 }
