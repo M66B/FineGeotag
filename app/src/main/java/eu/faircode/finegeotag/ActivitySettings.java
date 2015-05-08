@@ -13,7 +13,6 @@ import android.preference.PreferenceActivity;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,6 +49,7 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
         Preference pref_accuracy = findPreference(PREF_ACCURACY);
         Preference pref_version = findPreference(PREF_VERSION);
 
+        // Set default values
         pref_provider.setDefaultValue(getDefaultProvider(this));
         pref_timeout.setDefaultValue(DEFAULT_TIMEOUT);
         pref_accuracy.setDefaultValue(DEFAULT_ACCURACY);
@@ -60,14 +60,14 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
         Collections.sort(listProviderValue);
         List<String> listProviderName = new ArrayList<>();
         for (String provider : listProviderValue)
-            listProviderName.add(translate(provider));
+            listProviderName.add(translateProvider(provider));
         pref_provider.setEntries(listProviderName.toArray(new CharSequence[0]));
         pref_provider.setEntryValues(listProviderValue.toArray(new CharSequence[0]));
 
         // Set summaries
         pref_enabled.setSummary(prefs.getBoolean(PREF_ENABLED, true) ? getString(R.string.summary_camera) : null);
         if (lm.isProviderEnabled(prefs.getString(PREF_PROVIDER, getDefaultProvider(this))))
-            pref_provider.setSummary(translate(prefs.getString(PREF_PROVIDER, getDefaultProvider(this))));
+            pref_provider.setSummary(translateProvider(prefs.getString(PREF_PROVIDER, getDefaultProvider(this))));
         else
             pref_provider.setSummary(getString(R.string.provider_select));
         pref_timeout.setSummary(getString(R.string.summary_seconds, prefs.getString(PREF_TIMEOUT, DEFAULT_TIMEOUT)));
@@ -97,7 +97,7 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
         return provider;
     }
 
-    private String translate(String provider) {
+    private String translateProvider(String provider) {
         String self = ActivitySettings.class.getPackage().getName();
         int resId = getResources().getIdentifier("provider_" + provider, "string", self);
         return (resId > 0 ? getString(resId) : provider);
@@ -106,9 +106,9 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         Log.w(TAG, "Changed pref=" + key);
-
         Preference pref = findPreference(key);
 
+        // Remove empty string settings
         if (pref instanceof EditTextPreference)
             if ("".equals(prefs.getString(key, null))) {
                 SharedPreferences.Editor edit = prefs.edit();
@@ -120,7 +120,7 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
             pref.setSummary(prefs.getBoolean(PREF_ENABLED, true) ? getString(R.string.summary_camera) : null);
 
         else if (PREF_PROVIDER.equals(key))
-            pref.setSummary(translate(prefs.getString(key, getDefaultProvider(this))));
+            pref.setSummary(translateProvider(prefs.getString(key, getDefaultProvider(this))));
 
         else if (PREF_TIMEOUT.equals(key))
             pref.setSummary(getString(R.string.summary_seconds, prefs.getString(key, DEFAULT_TIMEOUT)));

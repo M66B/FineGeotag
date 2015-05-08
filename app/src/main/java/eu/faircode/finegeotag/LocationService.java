@@ -89,10 +89,10 @@ public class LocationService extends IntentService {
             exif.saveAttributes();
             Log.w(TAG, "Exif updated image=" + image_filename);
 
-            // Geocode
+            // Reverse geocode
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             if (prefs.getBoolean(ActivitySettings.PREF_TOAST, true)) {
-                String address = geocode(location);
+                String address = reverseGeocode(location);
                 if (address == null)
                     address = getString(R.string.msg_geotagged);
                 notify(image_filename, address);
@@ -120,7 +120,7 @@ public class LocationService extends IntentService {
         am.cancel(pia);
     }
 
-    private String geocode(Location location) throws IOException {
+    private String reverseGeocode(Location location) throws IOException {
         String address = null;
         if (Geocoder.isPresent()) {
             Geocoder geocoder = new Geocoder(this);
