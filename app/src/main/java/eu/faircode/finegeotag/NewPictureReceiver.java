@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.SystemClock;
@@ -14,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.File;
+import java.io.IOException;
 
 public class NewPictureReceiver extends BroadcastReceiver {
     private static final String TAG = "FineGeotag.Receiver";
@@ -45,13 +47,43 @@ public class NewPictureReceiver extends BroadcastReceiver {
                 cursor.close();
         }
 
+        // Check provider
+        String provider = prefs.getString(ActivitySettings.PREF_PROVIDER, LocationManager.GPS_PROVIDER);
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        if (!lm.isProviderEnabled(provider)) {
+            Log.w(TAG, "Provider " + provider + " not enabled image=" + image_filename);
+
+            // Get best last known location
+            Location bestLocation = null;
+            for (String fallback : lm.getProviders(true)) {
+                Location location = lm.getLastKnownLocation(fallback);
+                Log.w(TAG, "Last known location=" + location + " fallback=" + fallback + " image=" + image_filename);
+                if (location != null && (bestLocation == null || location.getAccuracy() < bestLocation.getAccuracy()))
+                    bestLocation = location;
+            }
+
+            // Process best last known location
+            if (bestLocation != null) {
+                Log.w(TAG, "Best last known location=" + bestLocation + " image=" + image_filename);
+                try {
+                    // Write Exif
+                    ExifInterfaceEx exif = new ExifInterfaceEx(image_filename);
+                    exif.setLocation(bestLocation);
+                    exif.saveAttributes();
+                    Log.w(TAG, "Exif updated image=" + image_filename);
+                } catch (IOException ex) {
+                    Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
+                }
+            }
+
+            return;
+        }
+
         // Request location
         Intent locationIntent = new Intent(context, LocationService.class);
         locationIntent.setAction(LocationService.ACTION_LOCATION);
         locationIntent.setData(Uri.fromFile(new File(image_filename)));
         PendingIntent pil = PendingIntent.getService(context, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        String provider = prefs.getString(ActivitySettings.PREF_PROVIDER, LocationManager.GPS_PROVIDER);
-        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         lm.requestLocationUpdates(provider, 1000, 1, pil);
         Log.w(TAG, "Requested locations provider=" + provider + " image" + image_filename);
 
