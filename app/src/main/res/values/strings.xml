@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">Fine Geotag</string>
     <string name="pref_enabled">Geotagging enabled</string>
+    <string name="pref_toast">Popup after geotagging</string>
     <string name="pref_provider">Location provider</string>
     <string name="pref_timeout">Location time-out</string>
-    <string name="pref_toast">Popup after geotagging</string>
-    <string name="summary_timeout">%s seconds</string>
+    <string name="pref_accuracy">Minimum accuracy</string>
+    <string name="summary_seconds">%s seconds</string>
+    <string name="summary_meters">%s meter</string>
     <string name="msg_geotagged">Geotagged</string>
 </resources>

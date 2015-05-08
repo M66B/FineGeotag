@@ -15,17 +15,19 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
     private static final String TAG = "FineGeotag.Settings";
 
     public static final String PREF_ENABLED = "pref_enabled";
+    public static final String PREF_TOAST = "pref_toast";
     public static final String PREF_PROVIDER = "pref_provider";
     public static final String PREF_TIMEOUT = "pref_timeout";
-    public static final String PREF_TOAST = "pref_toast";
+    public static final String PREF_ACCURACY = "pref_accuracy";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
-        Preference pref_timeout = findPreference(PREF_TIMEOUT);
         ListPreference pref_provider = (ListPreference) findPreference(PREF_PROVIDER);
+        Preference pref_timeout = findPreference(PREF_TIMEOUT);
+        Preference pref_accurary = findPreference(PREF_ACCURACY);
 
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         List<String> listProvider = lm.getProviders(true);
@@ -34,8 +36,8 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
 
         SharedPreferences prefs = getPreferenceScreen().getSharedPreferences();
         pref_provider.setSummary(prefs.getString(PREF_PROVIDER, LocationManager.GPS_PROVIDER));
-        pref_timeout.setSummary(getString(R.string.summary_timeout, prefs.getString(PREF_TIMEOUT, null)));
-
+        pref_timeout.setSummary(getString(R.string.summary_seconds, prefs.getString(PREF_TIMEOUT, null)));
+        pref_accurary.setSummary(getString(R.string.summary_meters, prefs.getString(PREF_ACCURACY, null)));
     }
 
     @Override
@@ -59,6 +61,9 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
             pref.setSummary(sharedPreferences.getString(key, null));
 
         else if (PREF_TIMEOUT.equals(key))
-            pref.setSummary(getString(R.string.summary_timeout, sharedPreferences.getString(key, null)));
+            pref.setSummary(getString(R.string.summary_seconds, sharedPreferences.getString(key, null)));
+
+        else if (PREF_ACCURACY.equals(key))
+            pref.setSummary(getString(R.string.summary_meters, sharedPreferences.getString(key, null)));
     }
 }

@@ -52,7 +52,7 @@ public class NewPictureReceiver extends BroadcastReceiver {
         PendingIntent pil = PendingIntent.getService(context, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         String provider = prefs.getString(ActivitySettings.PREF_PROVIDER, LocationManager.GPS_PROVIDER);
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        lm.requestSingleUpdate(provider, pil);
+        lm.requestLocationUpdates(provider, 1000, 1, pil);
         Log.w(TAG, "Requested location provider=" + provider + " image" + image_filename);
 
         // Set timeout

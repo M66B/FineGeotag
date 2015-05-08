@@ -17,4 +17,9 @@
         android:inputType="number"
         android:key="pref_timeout"
         android:title="@string/pref_timeout" />
+    <EditTextPreference
+        android:defaultValue="50"
+        android:inputType="number"
+        android:key="pref_accuracy"
+        android:title="@string/pref_accuracy" />
 </PreferenceScreen>

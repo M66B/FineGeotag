@@ -1,5 +1,6 @@
 package eu.faircode.finegeotag;
 
+import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -39,13 +40,23 @@ public class LocationService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.w(TAG, "Intent=" + intent);
+        String image_filename = intent.getData().getPath();
 
         if (ACTION_LOCATION.equals(intent.getAction())) {
-            String image_filename = intent.getData().getPath();
             Location location = (Location) intent.getExtras().get(LocationManager.KEY_LOCATION_CHANGED);
             Log.w(TAG, "Location=" + location + " image=" + image_filename);
+            if (location != null) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-            if (location != null)
+                // Check accuracy
+                if (location.getAccuracy() > Float.parseFloat(prefs.getString(ActivitySettings.PREF_ACCURACY, "50"))) {
+                    Log.w(TAG, "Inaccurate: " + location.getAccuracy() + "m");
+                    return;
+                }
+
+                // Cancel further updates
+                cancelUpdates(image_filename);
+
                 try {
                     // Write Exif
                     ExifInterfaceEx exif = new ExifInterfaceEx(image_filename);
@@ -54,7 +65,6 @@ public class LocationService extends IntentService {
                     Log.w(TAG, "Exif updated image=" + image_filename);
 
                     // Geocode
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
                     if (prefs.getBoolean(ActivitySettings.PREF_TOAST, true)) {
                         String address = geocode(location);
                         if (address == null)
@@ -64,18 +74,30 @@ public class LocationService extends IntentService {
                 } catch (IOException ex) {
                     Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
                 }
+            }
 
         } else if (ACTION_ALARM.equals(intent.getAction())) {
-            String image_filename = intent.getData().getPath();
-
-            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            Intent locationIntent = new Intent(this, LocationService.class);
-            locationIntent.setAction(LocationService.ACTION_LOCATION);
-            locationIntent.setData(Uri.fromFile(new File(image_filename)));
-            PendingIntent pi = PendingIntent.getService(this, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            lm.removeUpdates(pi);
+            cancelUpdates(image_filename);
             Log.w(TAG, "Timeout image=" + image_filename);
         }
+    }
+
+    private void cancelUpdates(String image_filename) {
+        // Cancel location updates
+        Intent locationIntent = new Intent(this, LocationService.class);
+        locationIntent.setAction(LocationService.ACTION_LOCATION);
+        locationIntent.setData(Uri.fromFile(new File(image_filename)));
+        PendingIntent pi = PendingIntent.getService(this, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        lm.removeUpdates(pi);
+
+        // Cancel alarm
+        Intent alarmIntent = new Intent(this, LocationService.class);
+        alarmIntent.setAction(LocationService.ACTION_ALARM);
+        alarmIntent.setData(Uri.fromFile(new File(image_filename)));
+        PendingIntent pia = PendingIntent.getService(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        am.cancel(pia);
     }
 
     private String geocode(Location location) throws IOException {
