@@ -97,6 +97,12 @@ public class LocationService extends IntentService {
                     address = getString(R.string.msg_geotagged);
                 notify(image_filename, address);
             }
+
+            // Broadcast geotagged intent
+            Intent intent = new Intent("eu.faircode.action.GEOTAGGED");
+            intent.setData(Uri.fromFile(new File(image_filename)));
+            Log.w(TAG, "Broadcasting " + intent);
+            sendBroadcast(intent);
         } catch (IOException ex) {
             Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
         }
