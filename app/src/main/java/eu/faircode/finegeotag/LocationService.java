@@ -45,10 +45,9 @@ public class LocationService extends IntentService {
             Location location = (Location) intent.getExtras().get(LocationManager.KEY_LOCATION_CHANGED);
             Log.w(TAG, "Location=" + location + " image=" + image_filename);
             if (location != null) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
                 // Check accuracy
-                if (location.getAccuracy() > Float.parseFloat(prefs.getString(ActivitySettings.PREF_ACCURACY, "50"))) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                if (location.getAccuracy() > Float.parseFloat(prefs.getString(ActivitySettings.PREF_ACCURACY, ActivitySettings.DEFAULT_ACCURACY))) {
                     Log.w(TAG, "Inaccurate image=" + image_filename);
                     return;
                 }
@@ -56,29 +55,50 @@ public class LocationService extends IntentService {
                 // Cancel further updates
                 cancelUpdates(image_filename);
 
-                try {
-                    // Write Exif
-                    ExifInterfaceEx exif = new ExifInterfaceEx(image_filename);
-                    exif.setLocation(location);
-                    exif.saveAttributes();
-                    Log.w(TAG, "Exif updated image=" + image_filename);
-
-                    // Geocode
-                    if (prefs.getBoolean(ActivitySettings.PREF_TOAST, true)) {
-                        String address = geocode(location);
-                        if (address == null)
-                            address = getString(R.string.msg_geotagged);
-                        notify(image_filename, address);
-                    }
-                } catch (IOException ex) {
-                    Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
-                }
+                // Process location
+                updateExif(image_filename, location);
             }
 
         } else if (ACTION_ALARM.equals(intent.getAction())) {
             Log.w(TAG, "Timeout image=" + image_filename);
             cancelUpdates(image_filename);
-            NewPictureReceiver.setBestLastKnownLocation(image_filename, this);
+
+            // Get best last known location
+            Location bestLocation = null;
+            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            for (String fallback : lm.getProviders(true)) {
+                Location location = lm.getLastKnownLocation(fallback);
+                Log.w(TAG, "Last known location=" + location + " fallback=" + fallback + " image=" + image_filename);
+                if (location != null && (bestLocation == null || location.getAccuracy() < bestLocation.getAccuracy()))
+                    bestLocation = location;
+            }
+
+            // Process best last known location
+            if (bestLocation != null) {
+                Log.w(TAG, "Best last known location=" + bestLocation + " image=" + image_filename);
+                updateExif(image_filename, bestLocation);
+            }
+        }
+    }
+
+    private void updateExif(String image_filename, Location location) {
+        try {
+            // Write Exif
+            ExifInterfaceEx exif = new ExifInterfaceEx(image_filename);
+            exif.setLocation(location);
+            exif.saveAttributes();
+            Log.w(TAG, "Exif updated image=" + image_filename);
+
+            // Geocode
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            if (prefs.getBoolean(ActivitySettings.PREF_TOAST, true)) {
+                String address = geocode(location);
+                if (address == null)
+                    address = getString(R.string.msg_geotagged);
+                notify(image_filename, address);
+            }
+        } catch (IOException ex) {
+            Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
         }
     }
 

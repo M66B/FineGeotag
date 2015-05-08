@@ -9,16 +9,13 @@
         android:key="pref_toast"
         android:title="@string/pref_toast" />
     <ListPreference
-        android:defaultValue="gps"
         android:key="pref_provider"
         android:title="@string/pref_provider" />
     <EditTextPreference
-        android:defaultValue="60"
         android:inputType="number"
         android:key="pref_timeout"
         android:title="@string/pref_timeout" />
     <EditTextPreference
-        android:defaultValue="50"
         android:inputType="number"
         android:key="pref_accuracy"
         android:title="@string/pref_accuracy" />

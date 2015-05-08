@@ -15,6 +15,10 @@ ACCESS_COARSE_LOCATION/ACCESS_FINE_LOCATION: to acquire locations
 
 WRITE_EXTERNAL_STORAGE: to write [Exif](http://en.wikipedia.org/wiki/Exchangeable_image_file_format) data
 
+# Attribution
+
+The application icon is from the [Geotag Icon Project](https://geotagicons.wordpress.com/)
+
 # License
 
 [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.txt)

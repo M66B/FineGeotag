@@ -10,6 +10,7 @@
     <string name="pref_author">Author</string>
     <string name="pref_license">License</string>
 
+    <string name="summary_camera">Disable geotagging of your camera</string>
     <string name="summary_seconds">%s seconds</string>
     <string name="summary_meters">%s meter</string>
     <string name="summary_author">Marcel Bokhorst (M66B)</string>
@@ -20,4 +21,5 @@
     <string name="provider_passive">Passive</string>
     <string name="provider_gps">GPS</string>
     <string name="provider_network">Network</string>
+    <string name="provider_select">Select an available provider</string>
 </resources>
