@@ -18,15 +18,31 @@ Works only for JPEG pictures.
 
 Works on Android 2.3+ (Gingerbread and later).
 
+# Settings
+
+**Location provider**
+
+* *GPS*: most accurate, with altitude information, but doesn't always work indoors
+* *Network*: less accurate, no altitude information, mostly works indoors as well
+* *Passive*: use locations requested by other applications
+
+**Location time-out**
+
+If no location could be acquire in the specified time, the best last know location will be used.
+
+**Minimum accuracy**
+
+Stop locating after a location with this or a better accuracy has been acquired.
+
 # Permissions
 
-ACCESS_COARSE_LOCATION/ACCESS_FINE_LOCATION: to acquire locations
+*ACCESS_COARSE/FINE_LOCATION*: to acquire locations for geotagging
 
-WRITE_EXTERNAL_STORAGE: to write [Exif](http://en.wikipedia.org/wiki/Exchangeable_image_file_format) data
+*WRITE_EXTERNAL_STORAGE*: to write [Exif](http://en.wikipedia.org/wiki/Exchangeable_image_file_format) location tags to photos
 
 # Privacy
 
-FineGeotag has no internet permissions, so you don't have to be afraid privacy sensitive information is going anywhere.
+FineGeotag has no INTERNET permission, so you don't have to be afraid privacy sensitive information is going anywhere.
 
 # Download
 
