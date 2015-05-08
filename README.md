@@ -12,6 +12,8 @@ Optionally a popup will be shown with a thumbnail of the photo and the [reverse 
 
 Don't forget to disable geotagging of your camera application to prevent interference.
 
+You could use [PhotoMap](https://play.google.com/store/apps/details?id=eu.bischofs.photomap) or similar to display geotagged photos on a map.
+
 Works only for JPEG pictures.
 
 Works on Android 2.3+ (Gingerbread and later).
@@ -21,6 +23,10 @@ Works on Android 2.3+ (Gingerbread and later).
 ACCESS_COARSE_LOCATION/ACCESS_FINE_LOCATION: to acquire locations
 
 WRITE_EXTERNAL_STORAGE: to write [Exif](http://en.wikipedia.org/wiki/Exchangeable_image_file_format) data
+
+# Privacy
+
+FineGeotag has no internet permissions, so you don't have to be afraid privacy sensitive information is going anywhere.
 
 # Attribution
 
