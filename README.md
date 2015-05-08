@@ -3,9 +3,17 @@ Automatically geotag photos with a real-time fine location right after they were
 
 The camera application mostly uses the last known location, which could be old and miles away from your current position.
 
+Optionally a popup will be shown with a thumbnail of the photo and the [reverse geocoded](http://en.wikipedia.org/wiki/Reverse_geocoding) address after geotagging.
+
 Don't forget to disable getagging of your camera application to prevent interference.
 
 Works only for JPEG pictures.
+
+# Permissions
+
+ACCESS_COARSE_LOCATION/ACCESS_FINE_LOCATION: to acquire locations
+
+WRITE_EXTERNAL_STORAGE: to write [Exif](http://en.wikipedia.org/wiki/Exchangeable_image_file_format) data
 
 # License
 
