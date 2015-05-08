@@ -9,6 +9,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActivitySettings extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -25,19 +26,31 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
+        // Get preferences
         ListPreference pref_provider = (ListPreference) findPreference(PREF_PROVIDER);
         Preference pref_timeout = findPreference(PREF_TIMEOUT);
         Preference pref_accurary = findPreference(PREF_ACCURACY);
 
+        // Get provider name/values
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        List<String> listProvider = lm.getProviders(true);
-        pref_provider.setEntries(listProvider.toArray(new CharSequence[0]));
-        pref_provider.setEntryValues(listProvider.toArray(new CharSequence[0]));
+        List<String> listProviderValue = lm.getProviders(true);
+        List<String> listProviderName = new ArrayList<>();
+        for (String provider : listProviderValue)
+            listProviderName.add(translate(provider));
+        pref_provider.setEntries(listProviderName.toArray(new CharSequence[0]));
+        pref_provider.setEntryValues(listProviderValue.toArray(new CharSequence[0]));
 
+        // Set summaries
         SharedPreferences prefs = getPreferenceScreen().getSharedPreferences();
-        pref_provider.setSummary(prefs.getString(PREF_PROVIDER, LocationManager.GPS_PROVIDER));
+        pref_provider.setSummary(translate(prefs.getString(PREF_PROVIDER, LocationManager.GPS_PROVIDER)));
         pref_timeout.setSummary(getString(R.string.summary_seconds, prefs.getString(PREF_TIMEOUT, null)));
         pref_accurary.setSummary(getString(R.string.summary_meters, prefs.getString(PREF_ACCURACY, null)));
+    }
+
+    private String translate(String provider) {
+        String self = ActivitySettings.class.getPackage().getName();
+        int resId = getResources().getIdentifier("provider_" + provider, "string", self);
+        return (resId > 0 ? getString(resId) : provider);
     }
 
     @Override
@@ -58,7 +71,7 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
 
         Preference pref = findPreference(key);
         if (PREF_PROVIDER.equals(key))
-            pref.setSummary(sharedPreferences.getString(key, null));
+            pref.setSummary(translate(sharedPreferences.getString(key, null)));
 
         else if (PREF_TIMEOUT.equals(key))
             pref.setSummary(getString(R.string.summary_seconds, sharedPreferences.getString(key, null)));
