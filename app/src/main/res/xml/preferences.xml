@@ -28,5 +28,9 @@
     <Preference
         android:key="pref_author"
         android:summary="@string/summary_author"
-        android:title="@string/pref_author" />
+        android:title="@string/pref_author">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="http://www.faircode.eu/" />
+    </Preference>
 </PreferenceScreen>
