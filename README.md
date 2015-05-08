@@ -3,9 +3,10 @@ Automatically geotag photos with a real-time fine location right after they were
 
 The camera application mostly uses the last known location, which could be old and miles away from your current position.
 
-Optionally a popup will be shown with a thumbnail of the photo and the [reverse geocoded](http://en.wikipedia.org/wiki/Reverse_geocoding) address after geotagging.
+Optionally a popup will be shown with a thumbnail of the photo and the [reverse geocoded](http://en.wikipedia.org/wiki/Reverse_geocoding) address
+(note that the Google Geocoder needs to be present for geocoding to work).
 
-Don't forget to disable getagging of your camera application to prevent interference.
+Don't forget to disable geotagging of your camera application to prevent interference.
 
 Works only for JPEG pictures.
 
