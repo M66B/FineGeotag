@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +49,7 @@ public class LocationService extends IntentService {
 
                 // Check accuracy
                 if (location.getAccuracy() > Float.parseFloat(prefs.getString(ActivitySettings.PREF_ACCURACY, "50"))) {
-                    Log.w(TAG, "Inaccurate: " + location.getAccuracy() + "m");
+                    Log.w(TAG, "Inaccurate image=" + image_filename);
                     return;
                 }
 
@@ -125,8 +124,8 @@ public class LocationService extends IntentService {
                 LayoutInflater inflater = LayoutInflater.from(LocationService.this);
                 View layout = inflater.inflate(R.layout.geotagged, null);
 
-                ImageView image = (ImageView) layout.findViewById(R.id.image);
-                image.setImageURI(Uri.fromFile(new File(image_filename)));
+                ImageView iv = (ImageView) layout.findViewById(R.id.image);
+                iv.setImageURI(Uri.fromFile(new File(image_filename)));
                 TextView tv = (TextView) layout.findViewById(R.id.text);
                 tv.setText(text);
 

@@ -53,7 +53,7 @@ public class NewPictureReceiver extends BroadcastReceiver {
         String provider = prefs.getString(ActivitySettings.PREF_PROVIDER, LocationManager.GPS_PROVIDER);
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         lm.requestLocationUpdates(provider, 1000, 1, pil);
-        Log.w(TAG, "Requested location provider=" + provider + " image" + image_filename);
+        Log.w(TAG, "Requested locations provider=" + provider + " image" + image_filename);
 
         // Set timeout
         int timeout = Integer.parseInt(prefs.getString(ActivitySettings.PREF_TIMEOUT, "60"));
