@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Fine Geotag</string>
+    <string name="app_name">FineGeotag</string>
 
     <string name="pref_enabled">Geotagging enabled</string>
     <string name="pref_toast">Popup after geotagging</string>
