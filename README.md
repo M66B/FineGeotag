@@ -9,6 +9,8 @@ Don't forget to disable getagging of your camera application to prevent interfer
 
 Works only for JPEG pictures.
 
+Works on Android 2.3+ (Gingerbread and later).
+
 # Permissions
 
 ACCESS_COARSE_LOCATION/ACCESS_FINE_LOCATION: to acquire locations
