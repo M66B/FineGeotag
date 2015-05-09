@@ -73,7 +73,7 @@ public class NewPictureReceiver extends BroadcastReceiver {
         if (!lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER) && !lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
             timeout = 1;
         Intent alarmIntent = new Intent(context, LocationService.class);
-        alarmIntent.setAction(LocationService.ACTION_ALARM);
+        alarmIntent.setAction(LocationService.ACTION_TIMEOUT);
         alarmIntent.setData(Uri.fromFile(new File(image_filename)));
         PendingIntent pia = PendingIntent.getService(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

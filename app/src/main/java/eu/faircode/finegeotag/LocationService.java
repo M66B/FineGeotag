@@ -42,7 +42,7 @@ public class LocationService extends IntentService {
 
     public static final String ACTION_LOCATION_FINE = "LocationFine";
     public static final String ACTION_LOCATION_COARSE = "LocationCoarse";
-    public static final String ACTION_ALARM = "Alarm";
+    public static final String ACTION_TIMEOUT = "TimeOut";
 
     private static final String PREFIX_LOCATION = "location_";
     private static final String ACTION_GEOTAGGED = "eu.faircode.action.GEOTAGGED";
@@ -92,7 +92,7 @@ public class LocationService extends IntentService {
             // Process location
             handleLocation(image_filename, location);
 
-        } else if (ACTION_ALARM.equals(intent.getAction())) {
+        } else if (ACTION_TIMEOUT.equals(intent.getAction())) {
             // Process location time-out
             Log.w(TAG, "Timeout image=" + image_filename);
 
@@ -182,7 +182,7 @@ public class LocationService extends IntentService {
         // Cancel alarm
         {
             Intent alarmIntent = new Intent(this, LocationService.class);
-            alarmIntent.setAction(LocationService.ACTION_ALARM);
+            alarmIntent.setAction(LocationService.ACTION_TIMEOUT);
             alarmIntent.setData(Uri.fromFile(new File(image_filename)));
             PendingIntent pi = PendingIntent.getService(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
