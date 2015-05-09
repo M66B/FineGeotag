@@ -24,7 +24,7 @@ public class NewPictureReceiver extends BroadcastReceiver {
 
         // Check if enabled
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        if (!prefs.getBoolean(ActivitySettings.PREF_ENABLED, true)) {
+        if (!prefs.getBoolean(ActivitySettings.PREF_ENABLED, ActivitySettings.DEFAULT_ENABLED)) {
             Log.w(TAG, "Disabled");
             return;
         }
@@ -45,24 +45,32 @@ public class NewPictureReceiver extends BroadcastReceiver {
                 cursor.close();
         }
 
-        // Check provider
-        String provider = prefs.getString(ActivitySettings.PREF_PROVIDER, ActivitySettings.getDefaultProvider(context));
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        if (!lm.isProviderEnabled(provider)) {
-            Log.w(TAG, "Provider " + provider + " not enabled image=" + image_filename);
-            provider = ActivitySettings.getDefaultProvider(context);
+
+        // Request coarse location
+        if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            Intent locationIntent = new Intent(context, LocationService.class);
+            locationIntent.setAction(LocationService.ACTION_LOCATION_COARSE);
+            locationIntent.setData(Uri.fromFile(new File(image_filename)));
+            PendingIntent pi = PendingIntent.getService(context, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, pi);
+            Log.w(TAG, "Requested network locations image=" + image_filename);
         }
 
-        // Request location
-        Intent locationIntent = new Intent(context, LocationService.class);
-        locationIntent.setAction(LocationService.ACTION_LOCATION);
-        locationIntent.setData(Uri.fromFile(new File(image_filename)));
-        PendingIntent pil = PendingIntent.getService(context, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        lm.requestLocationUpdates(provider, 1000, 1, pil);
-        Log.w(TAG, "Requested locations provider=" + provider + " image=" + image_filename);
+        // Request fine location
+        if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Intent locationIntent = new Intent(context, LocationService.class);
+            locationIntent.setAction(LocationService.ACTION_LOCATION_FINE);
+            locationIntent.setData(Uri.fromFile(new File(image_filename)));
+            PendingIntent pi = PendingIntent.getService(context, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, pi);
+            Log.w(TAG, "Requested GPS locations image=" + image_filename);
+        }
 
-        // Set timeout
+        // Set location timeout
         int timeout = Integer.parseInt(prefs.getString(ActivitySettings.PREF_TIMEOUT, ActivitySettings.DEFAULT_TIMEOUT));
+        if (!lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER) && !lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            timeout = 1000;
         Intent alarmIntent = new Intent(context, LocationService.class);
         alarmIntent.setAction(LocationService.ACTION_ALARM);
         alarmIntent.setData(Uri.fromFile(new File(image_filename)));

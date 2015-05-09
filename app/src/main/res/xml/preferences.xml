@@ -1,37 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
-        android:defaultValue="true"
         android:key="pref_enabled"
-        android:title="@string/pref_enabled" />
+        android:title="@string/title_enabled" />
     <CheckBoxPreference
-        android:defaultValue="true"
         android:key="pref_toast"
-        android:title="@string/pref_toast" />
-    <ListPreference
-        android:key="pref_provider"
-        android:title="@string/pref_provider" />
-    <EditTextPreference
-        android:inputType="number"
-        android:key="pref_timeout"
-        android:title="@string/pref_timeout" />
+        android:title="@string/title_toast" />
+    <CheckBoxPreference
+        android:key="pref_altitude"
+        android:title="@string/title_altitude" />
     <EditTextPreference
         android:inputType="number"
         android:key="pref_accuracy"
-        android:title="@string/pref_accuracy" />
+        android:summary="@string/summary_accuracy" />
+    <EditTextPreference
+        android:inputType="number"
+        android:key="pref_timeout"
+        android:summary="@string/summary_timeout" />
+    <Preference
+        android:key="pref_check"
+        android:summary="@string/summary_check"
+        android:title="@string/title_check">
+        <intent android:action="android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS" />
+    </Preference>
     <Preference
         android:key="pref_version"
-        android:title="@string/pref_version" />
+        android:title="@string/title_version" />
     <Preference
         android:summary="@string/summary_author"
-        android:title="@string/pref_author">
+        android:title="@string/title_author">
         <intent
             android:action="android.intent.action.VIEW"
             android:data="http://www.faircode.eu/" />
     </Preference>
     <Preference
         android:summary="@string/summary_license"
-        android:title="@string/pref_license">
+        android:title="@string/title_license">
         <intent
             android:action="android.intent.action.VIEW"
             android:data="http://www.gnu.org/licenses/gpl.txt" />
