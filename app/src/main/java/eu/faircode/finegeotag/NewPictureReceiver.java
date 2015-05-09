@@ -17,6 +17,8 @@ import java.io.File;
 
 public class NewPictureReceiver extends BroadcastReceiver {
     private static final String TAG = "FineGeotag.Receiver";
+    private static final int LOCATION_MIN_TIME = 1000; // milliseconds
+    private static final int LOCATION_MIN_DISTANCE = 1; // meters
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -52,7 +54,7 @@ public class NewPictureReceiver extends BroadcastReceiver {
             locationIntent.setAction(LocationService.ACTION_LOCATION_COARSE);
             locationIntent.setData(Uri.fromFile(new File(image_filename)));
             PendingIntent pi = PendingIntent.getService(context, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, pi);
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_MIN_TIME, LOCATION_MIN_DISTANCE, pi);
             Log.w(TAG, "Requested network locations image=" + image_filename);
         }
 
@@ -62,7 +64,7 @@ public class NewPictureReceiver extends BroadcastReceiver {
             locationIntent.setAction(LocationService.ACTION_LOCATION_FINE);
             locationIntent.setData(Uri.fromFile(new File(image_filename)));
             PendingIntent pi = PendingIntent.getService(context, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, pi);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_MIN_TIME, LOCATION_MIN_DISTANCE, pi);
             Log.w(TAG, "Requested GPS locations image=" + image_filename);
         }
 
