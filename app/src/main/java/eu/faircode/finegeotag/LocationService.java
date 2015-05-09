@@ -44,6 +44,7 @@ public class LocationService extends IntentService {
     public static final String ACTION_LOCATION_COARSE = "LocationCoarse";
     public static final String ACTION_ALARM = "Alarm";
 
+    private static final String PREFIX_LOCATION = "location_";
     private static final String ACTION_GEOTAGGED = "eu.faircode.action.GEOTAGGED";
 
     public LocationService() {
@@ -73,7 +74,7 @@ public class LocationService extends IntentService {
             Location bestLocation = deserialize(prefs.getString(image_filename, null));
             if (isBetterLocation(bestLocation, location)) {
                 Log.w(TAG, "Better location=" + location + " image=" + image_filename);
-                prefs.edit().putString(image_filename, serialize(location)).apply();
+                prefs.edit().putString(PREFIX_LOCATION + image_filename, serialize(location)).apply();
             }
 
             // Check altitude
@@ -128,7 +129,7 @@ public class LocationService extends IntentService {
             // Stop locating
             cancelPendingIntents(image_filename);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            prefs.edit().remove(image_filename).apply();
+            prefs.edit().remove(PREFIX_LOCATION + image_filename).apply();
             if (location == null)
                 return;
 
