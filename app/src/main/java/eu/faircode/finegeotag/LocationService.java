@@ -71,9 +71,7 @@ public class LocationService extends IntentService {
 
             // Persist better location
             Location bestLocation = deserialize(prefs.getString(image_filename, null));
-            if (bestLocation == null ||
-                    ((!pref_altitude || !bestLocation.hasAltitude() || location.hasAltitude()) &&
-                            location.getAccuracy() < bestLocation.getAccuracy())) {
+            if (isBetterLocation(bestLocation, location)) {
                 Log.w(TAG, "Better location=" + location + " image=" + image_filename);
                 prefs.edit().putString(image_filename, serialize(location)).apply();
             }
@@ -99,9 +97,28 @@ public class LocationService extends IntentService {
 
             // Process best location
             Location bestLocation = deserialize(prefs.getString(image_filename, null));
+            if (bestLocation == null && prefs.getBoolean(ActivitySettings.PREF_LAST, ActivitySettings.DEFAULT_LAST)) {
+                LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                for (String provider : lm.getProviders(false)) {
+                    Location lastKnownLocation = lm.getLastKnownLocation(provider);
+                    Log.w(TAG, "Last known location=" + lastKnownLocation + " provider=" + provider);
+                    if (isBetterLocation(bestLocation, lastKnownLocation))
+                        bestLocation = lastKnownLocation;
+                }
+            }
+
             Log.w(TAG, "Best location=" + bestLocation + " image=" + image_filename);
             handleLocation(image_filename, bestLocation);
         }
+    }
+
+    private boolean isBetterLocation(Location prev, Location current) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean pref_altitude = prefs.getBoolean(ActivitySettings.PREF_ALTITUDE, ActivitySettings.DEFAULT_ALTITUDE);
+        return (prev == null ||
+                (current != null &&
+                        (!pref_altitude || !prev.hasAltitude() || current.hasAltitude()) &&
+                        current.getAccuracy() < prev.getAccuracy()));
     }
 
     private void handleLocation(String image_filename, Location location) {

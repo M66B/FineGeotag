@@ -18,6 +18,7 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
     public static final String PREF_ALTITUDE = "pref_altitude";
     public static final String PREF_ACCURACY = "pref_accuracy";
     public static final String PREF_TIMEOUT = "pref_timeout";
+    public static final String PREF_LAST = "pref_last";
     public static final String PREF_CHECK = "pref_check";
     public static final String PREF_VERSION = "pref_version";
 
@@ -26,6 +27,7 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
     public static final boolean DEFAULT_ALTITUDE = true;
     public static final String DEFAULT_ACCURACY = "50";
     public static final String DEFAULT_TIMEOUT = "60";
+    public static final boolean DEFAULT_LAST = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
         onSharedPreferenceChanged(prefs, PREF_ALTITUDE);
         onSharedPreferenceChanged(prefs, PREF_ACCURACY);
         onSharedPreferenceChanged(prefs, PREF_TIMEOUT);
+        onSharedPreferenceChanged(prefs, PREF_LAST);
 
         // Location settings
         Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -99,5 +102,8 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
 
         else if (PREF_TIMEOUT.equals(key))
             pref.setTitle(getString(R.string.title_timeout, prefs.getString(key, DEFAULT_TIMEOUT)));
+
+        else if (PREF_LAST.equals(key))
+            pref.setSummary(prefs.getBoolean(PREF_LAST, true) ? getString(R.string.summary_last) : null);
     }
 }

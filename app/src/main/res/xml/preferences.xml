@@ -22,12 +22,14 @@
         android:inputType="number"
         android:key="pref_timeout"
         android:summary="@string/summary_timeout" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_last"
+        android:title="@string/title_last" />
     <Preference
         android:key="pref_check"
         android:summary="@string/summary_check"
-        android:title="@string/title_check">
-        <intent android:action="android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS" />
-    </Preference>
+        android:title="@string/title_check" />
     <Preference
         android:key="pref_version"
         android:title="@string/title_version" />

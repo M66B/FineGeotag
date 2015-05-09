@@ -6,6 +6,7 @@
     <string name="title_altitude">Altitude information preferred</string>
     <string name="title_accuracy">Preferred accuracy: %s meters</string>
     <string name="title_timeout">Location time-out: %s seconds</string>
+    <string name="title_last">Last known location</string>
     <string name="title_check">Location settings</string>
     <string name="title_version">Version</string>
     <string name="title_author">Author</string>
@@ -16,6 +17,7 @@
     <string name="summary_altitude">Prefer less accurate locations with altitude information over more accurate locations without altitude information</string>
     <string name="summary_accuracy">Stop locating after a location with the selected accuracy or better has been acquired</string>
     <string name="summary_timeout">Always stop locating after the selected time</string>
+    <string name="summary_last">Use last known location if no location can be acquired</string>
     <string name="summary_check">Tap to open the Android location settings</string>
     <string name="summary_author">Marcel Bokhorst (M66B)\nTap for details (will start the browser)</string>
     <string name="summary_license">GNU General Public License version 3\nTap for details (will start the browser)</string>
