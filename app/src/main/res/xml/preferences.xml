@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
+        android:defaultValue="true"
         android:key="pref_enabled"
         android:title="@string/title_enabled" />
     <CheckBoxPreference
+        android:defaultValue="true"
         android:key="pref_toast"
         android:title="@string/title_toast" />
     <CheckBoxPreference
+        android:defaultValue="true"
         android:key="pref_altitude"
         android:title="@string/title_altitude" />
     <EditTextPreference
+        android:defaultValue="50"
         android:inputType="number"
         android:key="pref_accuracy"
         android:summary="@string/summary_accuracy" />
     <EditTextPreference
+        android:defaultValue="60"
         android:inputType="number"
         android:key="pref_timeout"
         android:summary="@string/summary_timeout" />

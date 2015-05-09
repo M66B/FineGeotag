@@ -41,20 +41,8 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
         SharedPreferences prefs = getPreferenceScreen().getSharedPreferences();
 
         // Get preferences
-        Preference pref_enabled = findPreference(PREF_ENABLED);
-        Preference pref_toast = findPreference(PREF_TOAST);
-        Preference pref_altitude = findPreference(PREF_ALTITUDE);
-        Preference pref_accuracy = findPreference(PREF_ACCURACY);
-        Preference pref_timeout = findPreference(PREF_TIMEOUT);
         Preference pref_check = findPreference(PREF_CHECK);
         Preference pref_version = findPreference(PREF_VERSION);
-
-        // Set default values
-        pref_enabled.setDefaultValue(DEFAULT_ENABLED);
-        pref_toast.setDefaultValue(DEFAULT_TOAST);
-        pref_altitude.setDefaultValue(DEFAULT_ALTITUDE);
-        pref_accuracy.setDefaultValue(DEFAULT_ACCURACY);
-        pref_timeout.setDefaultValue(DEFAULT_TIMEOUT);
 
         // Set summaries
         onSharedPreferenceChanged(prefs, PREF_ENABLED);
