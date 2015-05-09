@@ -3,7 +3,7 @@
 
     <string name="title_enabled">Geotagging enabled</string>
     <string name="title_toast">Popup after geotagging</string>
-    <string name="title_altitude">Altitude information preferred</string>
+    <string name="title_altitude">Altitude preferred</string>
     <string name="title_accuracy">Preferred accuracy: %s meters</string>
     <string name="title_timeout">Location time-out: %s seconds</string>
     <string name="title_known">Last known location: %s</string>
@@ -13,11 +13,11 @@
     <string name="title_license">License</string>
 
     <string name="summary_enabled">Disable geotagging of your camera application to prevent interference</string>
-    <string name="summary_toast">Show a popup with a thumbnail and the reverse geocoded address (if available) after geotagging a photo</string>
+    <string name="summary_toast">Show a popup with a thumbnail and a reverse geocoded address (if available) after geotagging a photo</string>
     <string name="summary_altitude">Prefer less accurate locations with altitude information over more accurate locations without altitude information</string>
-    <string name="summary_accuracy">Stop locating after a location with the selected accuracy or better has been acquired</string>
-    <string name="summary_timeout">Always stop locating after the selected time</string>
-    <string name="summary_known">Use last known location if no location can be acquired and when last known location is newer than the selected time</string>
+    <string name="summary_accuracy">Stop acquiring a location after a location with the selected accuracy has been acquired</string>
+    <string name="summary_timeout">Always stop acquiring the location after the selected time</string>
+    <string name="summary_known">Use the last known location if no location can be acquired and when the last known location is newer than the selected time</string>
     <string name="summary_check">Tap to open the Android location settings</string>
     <string name="summary_author">Marcel Bokhorst (M66B)\nTap for details (will start the browser)</string>
     <string name="summary_license">GNU General Public License version 3\nTap for details (will start the browser)</string>
