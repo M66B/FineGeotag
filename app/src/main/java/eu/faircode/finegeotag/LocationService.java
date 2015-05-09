@@ -62,7 +62,8 @@ public class LocationService extends IntentService {
             // Process location update
             Location location = (Location) intent.getExtras().get(LocationManager.KEY_LOCATION_CHANGED);
             Log.w(TAG, "Update location=" + location + " image=" + image_filename);
-            if (location == null)
+            if (location == null ||
+                    (location.getLatitude() == 0.0 && location.getLongitude() == 0.0))
                 return;
 
             // Get location preferences
