@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.provider.MediaStore;
 import android.provider.Settings;
 
 public class ActivitySettings extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -64,8 +64,11 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
             pref_check.setEnabled(false);
 
         // Version
+        String self = ActivitySettings.class.getPackage().getName();
+        Intent playStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + self));
+        if (getPackageManager().queryIntentActivities(playStoreIntent, 0).size() > 0)
+            pref_version.setIntent(playStoreIntent);
         try {
-            String self = ActivitySettings.class.getPackage().getName();
             PackageInfo pInfo = getPackageManager().getPackageInfo(self, 0);
             pref_version.setSummary(pInfo.versionName + "/" + pInfo.versionCode);
         } catch (PackageManager.NameNotFoundException ignored) {
