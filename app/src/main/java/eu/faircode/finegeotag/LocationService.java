@@ -97,12 +97,15 @@ public class LocationService extends IntentService {
 
             // Process best location
             Location bestLocation = deserialize(prefs.getString(image_filename, null));
-            if (bestLocation == null && prefs.getBoolean(ActivitySettings.PREF_LAST, ActivitySettings.DEFAULT_LAST)) {
+            if (bestLocation == null) {
+                int known = Integer.parseInt(prefs.getString(ActivitySettings.PREF_KNOWN, ActivitySettings.DEFAULT_KNOWN));
                 LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 for (String provider : lm.getProviders(false)) {
                     Location lastKnownLocation = lm.getLastKnownLocation(provider);
                     Log.w(TAG, "Last known location=" + lastKnownLocation + " provider=" + provider);
-                    if (isBetterLocation(bestLocation, lastKnownLocation))
+                    if (lastKnownLocation != null &&
+                            lastKnownLocation.getTime() > System.currentTimeMillis() - known * 60 * 1000 &&
+                            isBetterLocation(bestLocation, lastKnownLocation))
                         bestLocation = lastKnownLocation;
                 }
             }
@@ -116,8 +119,7 @@ public class LocationService extends IntentService {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean pref_altitude = prefs.getBoolean(ActivitySettings.PREF_ALTITUDE, ActivitySettings.DEFAULT_ALTITUDE);
         return (prev == null ||
-                (current != null &&
-                        (!pref_altitude || !prev.hasAltitude() || current.hasAltitude()) &&
+                ((!pref_altitude || !prev.hasAltitude() || current.hasAltitude()) &&
                         current.getAccuracy() < prev.getAccuracy()));
     }
 

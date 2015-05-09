@@ -6,8 +6,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.provider.MediaStore;
 import android.provider.Settings;
 
 public class ActivitySettings extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -18,16 +20,16 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
     public static final String PREF_ALTITUDE = "pref_altitude";
     public static final String PREF_ACCURACY = "pref_accuracy";
     public static final String PREF_TIMEOUT = "pref_timeout";
-    public static final String PREF_LAST = "pref_last";
+    public static final String PREF_KNOWN = "pref_known";
     public static final String PREF_CHECK = "pref_check";
     public static final String PREF_VERSION = "pref_version";
 
     public static final boolean DEFAULT_ENABLED = true;
     public static final boolean DEFAULT_TOAST = true;
     public static final boolean DEFAULT_ALTITUDE = true;
-    public static final String DEFAULT_ACCURACY = "50";
-    public static final String DEFAULT_TIMEOUT = "60";
-    public static final boolean DEFAULT_LAST = true;
+    public static final String DEFAULT_ACCURACY = "50"; // meters
+    public static final String DEFAULT_TIMEOUT = "60"; // seconds
+    public static final String DEFAULT_KNOWN = "15"; // minutes
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,12 +54,12 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
         onSharedPreferenceChanged(prefs, PREF_ALTITUDE);
         onSharedPreferenceChanged(prefs, PREF_ACCURACY);
         onSharedPreferenceChanged(prefs, PREF_TIMEOUT);
-        onSharedPreferenceChanged(prefs, PREF_LAST);
+        onSharedPreferenceChanged(prefs, PREF_KNOWN);
 
         // Location settings
-        Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        if (getPackageManager().queryIntentActivities(settingsIntent, 0).size() > 0)
-            pref_check.setIntent(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        Intent locationSettingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        if (getPackageManager().queryIntentActivities(locationSettingsIntent, 0).size() > 0)
+            pref_check.setIntent(locationSettingsIntent);
         else
             pref_check.setEnabled(false);
 
@@ -103,7 +105,10 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
         else if (PREF_TIMEOUT.equals(key))
             pref.setTitle(getString(R.string.title_timeout, prefs.getString(key, DEFAULT_TIMEOUT)));
 
-        else if (PREF_LAST.equals(key))
-            pref.setSummary(prefs.getBoolean(PREF_LAST, true) ? getString(R.string.summary_last) : null);
+        else if (PREF_KNOWN.equals(key)) {
+            ListPreference lpref = (ListPreference) pref;
+            int index = lpref.findIndexOfValue(prefs.getString(key, DEFAULT_KNOWN));
+            pref.setTitle(getString(R.string.title_known, lpref.getEntries()[index]));
+        }
     }
 }

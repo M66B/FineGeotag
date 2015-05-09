@@ -22,10 +22,12 @@
         android:inputType="number"
         android:key="pref_timeout"
         android:summary="@string/summary_timeout" />
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="pref_last"
-        android:title="@string/title_last" />
+    <ListPreference
+        android:defaultValue="15"
+        android:entries="@array/known_names"
+        android:entryValues="@array/known_values"
+        android:key="pref_known"
+        android:summary="@string/summary_known" />
     <Preference
         android:key="pref_check"
         android:summary="@string/summary_check"

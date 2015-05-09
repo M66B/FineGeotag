@@ -8,8 +8,8 @@ android {
         applicationId "eu.faircode.finegeotag"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 9
-        versionName "1.8"
+        versionCode 10
+        versionName "1.9"
     }
     buildTypes {
         debug {
