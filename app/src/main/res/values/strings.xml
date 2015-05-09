@@ -11,7 +11,7 @@
     <string name="title_author">Author</string>
     <string name="title_license">License</string>
 
-    <string name="summary_enabled">Disable geotagging of your camera to prevent interference</string>
+    <string name="summary_enabled">Disable geotagging of your camera application to prevent interference</string>
     <string name="summary_toast">Show a popup with a thumbnail and the reverse geocoded address (if available) after geotagging a photo</string>
     <string name="summary_altitude">Prefer less accurate locations with altitude information over more accurate locations without altitude information</string>
     <string name="summary_accuracy">Stop locating after a location with the selected accuracy or better has been acquired</string>
