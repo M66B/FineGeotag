@@ -46,6 +46,9 @@ public class ExifInterfaceEx extends ExifInterface {
             this.setAttribute("GPSSpeedRef", "K"); // Km/h
             this.setAttribute("GPSSpeed", String.valueOf(location.getSpeed() * 3600 / 1000));
         }
+
+        // Provider
+        this.setAttribute(TAG_GPS_PROCESSING_METHOD, location.getProvider());
     }
 
     private static String DMS(double x) {
