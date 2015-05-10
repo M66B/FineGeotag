@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
@@ -70,7 +71,10 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
             pref_version.setIntent(playStoreIntent);
         try {
             PackageInfo pInfo = getPackageManager().getPackageInfo(self, 0);
-            pref_version.setSummary(pInfo.versionName + "/" + pInfo.versionCode);
+            pref_version.setSummary(
+                    pInfo.versionName + "/" + pInfo.versionCode + "\n" +
+                            getString(R.string.msg_geocoder) + " " +
+                            getString(Geocoder.isPresent() ? R.string.msg_yes : R.string.msg_no));
         } catch (PackageManager.NameNotFoundException ignored) {
         }
     }

@@ -23,4 +23,7 @@
     <string name="summary_license">GNU General Public License version 3\nTap for details (will start the browser)</string>
 
     <string name="msg_geotagged">Geotagged</string>
+    <string name="msg_geocoder">Geocoder:</string>
+    <string name="msg_yes">yes</string>
+    <string name="msg_no">no</string>
 </resources>
