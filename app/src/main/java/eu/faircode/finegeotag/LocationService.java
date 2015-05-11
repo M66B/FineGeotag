@@ -72,7 +72,7 @@ public class LocationService extends IntentService {
             Log.w(TAG, "Prefer altitude=" + pref_altitude + " accuracy=" + pref_accuracy);
 
             // Persist better location
-            Location bestLocation = deserialize(prefs.getString(image_filename, null));
+            Location bestLocation = deserialize(prefs.getString(PREFIX_LOCATION + image_filename, null));
             if (isBetterLocation(bestLocation, location)) {
                 Log.w(TAG, "Better location=" + location + " image=" + image_filename);
                 prefs.edit().putString(PREFIX_LOCATION + image_filename, serialize(location)).apply();
@@ -98,7 +98,7 @@ public class LocationService extends IntentService {
             Log.w(TAG, "Timeout image=" + image_filename);
 
             // Process best location
-            Location bestLocation = deserialize(prefs.getString(image_filename, null));
+            Location bestLocation = deserialize(prefs.getString(PREFIX_LOCATION + image_filename, null));
             if (bestLocation == null) {
                 int known = Integer.parseInt(prefs.getString(ActivitySettings.PREF_KNOWN, ActivitySettings.DEFAULT_KNOWN));
                 LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
