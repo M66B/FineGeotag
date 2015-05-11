@@ -17,7 +17,7 @@
     <string name="summary_altitude">Geef de voorkeur aan minder nauwkeurige locaties met hoogte-informatie boven meer nauwkeurige locaties zonder hoogte-informatie</string>
     <string name="summary_accuracy">Stop het bepalen van een locatie nadat een locatie met de geselecteerde nauwkeurigheid is bereikt</string>
     <string name="summary_timeout">Stop altijd met het bepalen van een locatie na de geselecteerde tijd</string>
-    <string name="summary_known">Gebruik de laatst bekende locatie als er geen locatie bepaald kan worden en als de laast bekende locatie nieuwer is dan de geselecteerd tijd</string>
+    <string name="summary_known">Gebruik de laatst bekende locatie als er geen locatie bepaald kan worden en als de laatgitst bekende locatie nieuwer is dan de geselecteerd tijd</string>
     <string name="summary_check">Tap om de Android locatie-instellingen te openen</string>
     <string name="summary_author">Marcel Bokhorst (M66B)\nTap voor details (zal de browser starten)</string>
     <string name="summary_license">GNU General Public License version 3\nTap voor details (zal de browser starten)</string>
