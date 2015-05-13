@@ -88,7 +88,7 @@ public class LocationService extends IntentService {
             }
 
             // Check accuracy
-            if (location.getAccuracy() > pref_accuracy) {
+            if (!location.hasAccuracy() || location.getAccuracy() > pref_accuracy) {
                 Log.w(TAG, "Inaccurate image=" + image_filename);
                 return;
             }
@@ -167,7 +167,8 @@ public class LocationService extends IntentService {
         boolean pref_altitude = prefs.getBoolean(ActivitySettings.PREF_ALTITUDE, ActivitySettings.DEFAULT_ALTITUDE);
         return (prev == null ||
                 ((!pref_altitude || !prev.hasAltitude() || current.hasAltitude()) &&
-                        current.getAccuracy() < prev.getAccuracy()));
+                        (current.hasAccuracy() ? current.getAccuracy() : Float.MAX_VALUE) <
+                                (prev.hasAccuracy() ? prev.getAccuracy() : Float.MAX_VALUE)));
     }
 
     private void handleLocation(String image_filename, Location location) {
