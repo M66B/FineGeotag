@@ -280,7 +280,7 @@ public class LocationService extends IntentService {
             JsonObject jObject = new JsonObject();
 
             jObject.addProperty("Provider", src.getProvider());
-
+            jObject.addProperty("Time", src.getTime());
             jObject.addProperty("Latitude", src.getLatitude());
             jObject.addProperty("Longitude", src.getLongitude());
 
@@ -293,7 +293,8 @@ public class LocationService extends IntentService {
             if (src.hasAccuracy())
                 jObject.addProperty("Accuracy", src.getAccuracy());
 
-            jObject.addProperty("Time", src.getTime());
+            if (src.hasBearing())
+                jObject.addProperty("Bearing", src.getBearing());
 
             return jObject;
         }
@@ -305,6 +306,7 @@ public class LocationService extends IntentService {
             JsonObject jObject = (JsonObject) json;
             Location location = new Location(jObject.get("Provider").getAsString());
 
+            location.setTime(jObject.get("Time").getAsLong());
             location.setLatitude(jObject.get("Latitude").getAsDouble());
             location.setLongitude(jObject.get("Longitude").getAsDouble());
 
@@ -314,10 +316,11 @@ public class LocationService extends IntentService {
             if (jObject.has("Speed"))
                 location.setSpeed(jObject.get("Speed").getAsFloat());
 
+            if (jObject.has("Bearing"))
+                location.setBearing(jObject.get("Bearing").getAsFloat());
+
             if (jObject.has("Accuracy"))
                 location.setAccuracy(jObject.get("Accuracy").getAsFloat());
-
-            location.setTime(jObject.get("Time").getAsLong());
 
             return location;
         }
