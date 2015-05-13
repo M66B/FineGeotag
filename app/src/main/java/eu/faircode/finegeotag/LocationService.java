@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -44,6 +45,8 @@ public class LocationService extends IntentService {
     public static final String ACTION_LOCATION_COARSE = "LocationCoarse";
     public static final String ACTION_TIMEOUT = "TimeOut";
 
+    private static final int LOCATION_MIN_TIME = 1000; // milliseconds
+    private static final int LOCATION_MIN_DISTANCE = 1; // meters
     private static final String PREFIX_LOCATION = "location_";
     private static final String ACTION_GEOTAGGED = "eu.faircode.action.GEOTAGGED";
 
@@ -90,6 +93,8 @@ public class LocationService extends IntentService {
                 return;
             }
 
+            stopLocating(image_filename);
+
             // Process location
             handleLocation(image_filename, location);
 
@@ -112,9 +117,49 @@ public class LocationService extends IntentService {
                 }
             }
 
+            stopLocating(image_filename);
+
             Log.w(TAG, "Best location=" + bestLocation + " image=" + image_filename);
-            handleLocation(image_filename, bestLocation);
+            if (bestLocation != null)
+                handleLocation(image_filename, bestLocation);
         }
+    }
+
+    public static void startLocating(String image_filename, Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        // Request coarse location
+        if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            Intent locationIntent = new Intent(context, LocationService.class);
+            locationIntent.setAction(LocationService.ACTION_LOCATION_COARSE);
+            locationIntent.setData(Uri.fromFile(new File(image_filename)));
+            PendingIntent pi = PendingIntent.getService(context, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_MIN_TIME, LOCATION_MIN_DISTANCE, pi);
+            Log.w(TAG, "Requested network locations image=" + image_filename);
+        }
+
+        // Request fine location
+        if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Intent locationIntent = new Intent(context, LocationService.class);
+            locationIntent.setAction(LocationService.ACTION_LOCATION_FINE);
+            locationIntent.setData(Uri.fromFile(new File(image_filename)));
+            PendingIntent pi = PendingIntent.getService(context, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_MIN_TIME, LOCATION_MIN_DISTANCE, pi);
+            Log.w(TAG, "Requested GPS locations image=" + image_filename);
+        }
+
+        // Set location timeout
+        int timeout = Integer.parseInt(prefs.getString(ActivitySettings.PREF_TIMEOUT, ActivitySettings.DEFAULT_TIMEOUT));
+        if (!lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER) && !lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            timeout = 1;
+        Intent alarmIntent = new Intent(context, LocationService.class);
+        alarmIntent.setAction(LocationService.ACTION_TIMEOUT);
+        alarmIntent.setData(Uri.fromFile(new File(image_filename)));
+        PendingIntent pia = PendingIntent.getService(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + timeout * 1000, pia);
+        Log.w(TAG, "Set timeout=" + timeout + "s image=" + image_filename);
     }
 
     private boolean isBetterLocation(Location prev, Location current) {
@@ -127,12 +172,7 @@ public class LocationService extends IntentService {
 
     private void handleLocation(String image_filename, Location location) {
         try {
-            // Stop locating
-            cancelPendingIntents(image_filename);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            prefs.edit().remove(PREFIX_LOCATION + image_filename).apply();
-            if (location == null)
-                return;
 
             // Write Exif
             ExifInterfaceEx exif = new ExifInterfaceEx(image_filename);
@@ -159,7 +199,8 @@ public class LocationService extends IntentService {
         }
     }
 
-    private void cancelPendingIntents(String image_filename) {
+    private void stopLocating(String image_filename) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         // Cancel coarse location updates
@@ -189,6 +230,8 @@ public class LocationService extends IntentService {
             AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             am.cancel(pi);
         }
+
+        prefs.edit().remove(PREFIX_LOCATION + image_filename).apply();
     }
 
     private String reverseGeocode(Location location) throws IOException {
