@@ -75,10 +75,10 @@ public class LocationService extends IntentService {
             Log.w(TAG, "Prefer altitude=" + pref_altitude + " accuracy=" + pref_accuracy);
 
             // Persist better location
-            Location bestLocation = deserialize(prefs.getString(PREFIX_LOCATION + image_filename, null));
+            Location bestLocation = LocationDeserializer.deserialize(prefs.getString(PREFIX_LOCATION + image_filename, null));
             if (isBetterLocation(bestLocation, location)) {
                 Log.w(TAG, "Better location=" + location + " image=" + image_filename);
-                prefs.edit().putString(PREFIX_LOCATION + image_filename, serialize(location)).apply();
+                prefs.edit().putString(PREFIX_LOCATION + image_filename, LocationSerializer.serialize(location)).apply();
             }
 
             // Check altitude
@@ -103,7 +103,7 @@ public class LocationService extends IntentService {
             Log.w(TAG, "Timeout image=" + image_filename);
 
             // Process best location
-            Location bestLocation = deserialize(prefs.getString(PREFIX_LOCATION + image_filename, null));
+            Location bestLocation = LocationDeserializer.deserialize(prefs.getString(PREFIX_LOCATION + image_filename, null));
             if (bestLocation == null) {
                 int known = Integer.parseInt(prefs.getString(ActivitySettings.PREF_KNOWN, ActivitySettings.DEFAULT_KNOWN));
                 LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -276,7 +276,7 @@ public class LocationService extends IntentService {
 
     // Serialization
 
-    private class LocationSerializer implements JsonSerializer<Location> {
+    private static class LocationSerializer implements JsonSerializer<Location> {
         public JsonElement serialize(Location src, Type typeOfSrc, JsonSerializationContext context) {
             JsonObject jObject = new JsonObject();
 
@@ -299,9 +299,17 @@ public class LocationService extends IntentService {
 
             return jObject;
         }
+
+        public static String serialize(Location location) {
+            GsonBuilder builder = new GsonBuilder();
+            builder.registerTypeAdapter(Location.class, new LocationSerializer());
+            Gson gson = builder.create();
+            String json = gson.toJson(location);
+            return json;
+        }
     }
 
-    private class LocationDeserializer implements JsonDeserializer<Location> {
+    private static class LocationDeserializer implements JsonDeserializer<Location> {
         public Location deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                 throws JsonParseException {
             JsonObject jObject = (JsonObject) json;
@@ -325,21 +333,13 @@ public class LocationService extends IntentService {
 
             return location;
         }
-    }
 
-    private String serialize(Location location) {
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Location.class, new LocationSerializer());
-        Gson gson = builder.create();
-        String json = gson.toJson(location);
-        return json;
-    }
-
-    private Location deserialize(String json) {
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Location.class, new LocationDeserializer());
-        Gson gson = builder.create();
-        Location location = gson.fromJson(json, Location.class);
-        return location;
+        public static Location deserialize(String json) {
+            GsonBuilder builder = new GsonBuilder();
+            builder.registerTypeAdapter(Location.class, new LocationDeserializer());
+            Gson gson = builder.create();
+            Location location = gson.fromJson(json, Location.class);
+            return location;
+        }
     }
 }
