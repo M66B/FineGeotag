@@ -15,7 +15,7 @@
         android:key="pref_altitude"
         android:title="@string/title_altitude" />
     <EditTextPreference
-        android:defaultValue="50"
+        android:defaultValue="25"
         android:dependency="pref_enabled"
         android:inputType="number"
         android:key="pref_accuracy"
@@ -27,7 +27,7 @@
         android:key="pref_timeout"
         android:summary="@string/summary_timeout" />
     <ListPreference
-        android:defaultValue="15"
+        android:defaultValue="240"
         android:dependency="pref_enabled"
         android:entries="@array/known_names"
         android:entryValues="@array/known_values"

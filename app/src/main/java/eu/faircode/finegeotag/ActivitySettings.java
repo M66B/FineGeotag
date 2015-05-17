@@ -28,9 +28,9 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
     public static final boolean DEFAULT_ENABLED = true;
     public static final boolean DEFAULT_TOAST = true;
     public static final boolean DEFAULT_ALTITUDE = true;
-    public static final String DEFAULT_ACCURACY = "50"; // meters
+    public static final String DEFAULT_ACCURACY = "25"; // meters
     public static final String DEFAULT_TIMEOUT = "60"; // seconds
-    public static final String DEFAULT_KNOWN = "15"; // minutes
+    public static final String DEFAULT_KNOWN = "240"; // minutes
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
