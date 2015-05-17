@@ -235,21 +235,23 @@ public class LocationService extends IntentService {
         prefs.edit().remove(PREFIX_LOCATION + image_filename).apply();
     }
 
-    private String reverseGeocode(Location location) throws IOException {
+    private String reverseGeocode(Location location) {
         String address = null;
-        if (Geocoder.isPresent()) {
-            Geocoder geocoder = new Geocoder(this);
-            List<Address> listPlace = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            if (listPlace != null && listPlace.size() > 0) {
-                StringBuilder sb = new StringBuilder();
-                for (int l = 0; l < listPlace.get(0).getMaxAddressLineIndex(); l++) {
-                    if (l != 0)
-                        sb.append("\n");
-                    sb.append(listPlace.get(0).getAddressLine(l));
+        if (Geocoder.isPresent())
+            try {
+                Geocoder geocoder = new Geocoder(this);
+                List<Address> listPlace = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                if (listPlace != null && listPlace.size() > 0) {
+                    StringBuilder sb = new StringBuilder();
+                    for (int l = 0; l < listPlace.get(0).getMaxAddressLineIndex(); l++) {
+                        if (l != 0)
+                            sb.append("\n");
+                        sb.append(listPlace.get(0).getAddressLine(l));
+                    }
+                    address = sb.toString();
                 }
-                address = sb.toString();
+            } catch (IOException ignored) {
             }
-        }
         return address;
     }
 
