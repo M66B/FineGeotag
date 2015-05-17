@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ import com.google.gson.JsonSerializer;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LocationService extends IntentService {
@@ -183,7 +185,7 @@ public class LocationService extends IntentService {
 
             // Reverse geocode
             if (prefs.getBoolean(ActivitySettings.PREF_TOAST, ActivitySettings.DEFAULT_TOAST)) {
-                String address = reverseGeocode(location);
+                String address = TextUtils.join("\n", reverseGeocode(location, this));
                 Log.w(TAG, "Address=" + address + " image=" + image_filename);
                 address = getString(R.string.msg_geotagged) + (address == null ? "" : "\n" + address);
                 notify(image_filename, address);
@@ -235,24 +237,19 @@ public class LocationService extends IntentService {
         prefs.edit().remove(PREFIX_LOCATION + image_filename).apply();
     }
 
-    private String reverseGeocode(Location location) {
-        String address = null;
-        if (Geocoder.isPresent())
+    private static List<String> reverseGeocode(Location location, Context context) {
+        List<String> listline = new ArrayList<>();
+        if (location != null && Geocoder.isPresent())
             try {
-                Geocoder geocoder = new Geocoder(this);
+                Geocoder geocoder = new Geocoder(context);
                 List<Address> listPlace = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                 if (listPlace != null && listPlace.size() > 0) {
-                    StringBuilder sb = new StringBuilder();
-                    for (int l = 0; l < listPlace.get(0).getMaxAddressLineIndex(); l++) {
-                        if (l != 0)
-                            sb.append("\n");
-                        sb.append(listPlace.get(0).getAddressLine(l));
-                    }
-                    address = sb.toString();
+                    for (int l = 0; l < listPlace.get(0).getMaxAddressLineIndex(); l++)
+                        listline.add(listPlace.get(0).getAddressLine(l));
                 }
             } catch (IOException ignored) {
             }
-        return address;
+        return listline;
     }
 
     private void notify(final String image_filename, final String text) {
