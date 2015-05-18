@@ -11,6 +11,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -39,6 +40,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import gov.nasa.worldwind.geom.LatLon;
+import gov.nasa.worldwind.util.EGM96;
 
 public class LocationService extends IntentService {
     private static final String TAG = "FineGeotag.Service";
@@ -70,6 +74,22 @@ public class LocationService extends IntentService {
             if (location == null ||
                     (location.getLatitude() == 0.0 && location.getLongitude() == 0.0))
                 return;
+
+            // Correct altitude
+            String egm96FileName = Environment.getExternalStorageDirectory() + "/Download/" + "/WW15MGH.txt";
+            Log.w(TAG, "egm96=" + egm96FileName);
+            if (location.hasAltitude() && new File(egm96FileName).exists())
+                try {
+                    // http://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html
+                    EGM96 egm96 = new EGM96(egm96FileName);
+                    LatLon latlon = LatLon.fromDegrees(location.getLatitude(), location.getLongitude());
+                    double offset = egm96.getOffset(latlon.getLatitude(), latlon.getLongitude());
+                    Log.w(TAG, "Offset=" + offset);
+                    location.setAltitude(location.getAltitude() - offset);
+                    Log.w(TAG, "Corrected location=" + location);
+                } catch (IOException ex) {
+                    Log.w(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
+                }
 
             // Get location preferences
             boolean pref_altitude = prefs.getBoolean(ActivitySettings.PREF_ALTITUDE, ActivitySettings.DEFAULT_ALTITUDE);
