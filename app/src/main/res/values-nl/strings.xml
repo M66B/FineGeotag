@@ -7,6 +7,7 @@
     <string name="title_accuracy">Voorkeur nauwkeurigheid: %s meter</string>
     <string name="title_timeout">Locatie time-out: %s seconden</string>
     <string name="title_known">Laatst bekende locatie: %s</string>
+    <string name="title_download">Download geoid correctiebestand</string>
     <string name="title_check">Locatie-instellingen</string>
     <string name="title_version">Versie</string>
     <string name="title_author">Auteur</string>
@@ -18,6 +19,7 @@
     <string name="summary_accuracy">Stop het bepalen van een locatie nadat een locatie met de geselecteerde nauwkeurigheid is bereikt</string>
     <string name="summary_timeout">Stop altijd met het bepalen van een locatie na de geselecteerde tijd</string>
     <string name="summary_known">Gebruik de laatst bekende locatie als er geen locatie bepaald kan worden en als de laatst bekende locatie nieuwer is dan de geselecteerd tijd</string>
+    <string name="summary_download">Tap om het EGM96 geoid hoogtecorrectie bestand te downloaden (2.076.480 bytes)</string>
     <string name="summary_check">Tap om de Android locatie-instellingen te openen</string>
     <string name="summary_author">Marcel Bokhorst (M66B)\nTap voor details (zal de browser starten)</string>
     <string name="summary_license">GNU General Public License version 3\nTap voor details (zal de browser starten)</string>
