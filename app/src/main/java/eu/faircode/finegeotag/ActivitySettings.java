@@ -22,7 +22,6 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
     public static final String PREF_ACCURACY = "pref_accuracy";
     public static final String PREF_TIMEOUT = "pref_timeout";
     public static final String PREF_KNOWN = "pref_known";
-    public static final String PREF_DOWNLOAD = "pref_download";
     public static final String PREF_CHECK = "pref_check";
     public static final String PREF_VERSION = "pref_version";
 
@@ -47,7 +46,6 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
         SharedPreferences prefs = getPreferenceScreen().getSharedPreferences();
 
         // Get preferences
-        Preference pref_download = findPreference(PREF_DOWNLOAD);
         Preference pref_check = findPreference(PREF_CHECK);
         Preference pref_version = findPreference(PREF_VERSION);
 
@@ -58,12 +56,6 @@ public class ActivitySettings extends PreferenceActivity implements SharedPrefer
         onSharedPreferenceChanged(prefs, PREF_ACCURACY);
         onSharedPreferenceChanged(prefs, PREF_TIMEOUT);
         onSharedPreferenceChanged(prefs, PREF_KNOWN);
-
-        Intent downloadIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html"));
-        if (getPackageManager().queryIntentActivities(downloadIntent, 0).size() > 0)
-            pref_download.setIntent(downloadIntent);
-        else
-            pref_download.setEnabled(false);
 
         // Location settings
         Intent locationSettingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);

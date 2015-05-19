@@ -34,10 +34,6 @@
         android:key="pref_known"
         android:summary="@string/summary_known" />
     <Preference
-        android:key="pref_download"
-        android:summary="@string/summary_download"
-        android:title="@string/title_download" />
-    <Preference
         android:key="pref_check"
         android:summary="@string/summary_check"
         android:title="@string/title_check" />

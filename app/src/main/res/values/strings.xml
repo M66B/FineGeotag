@@ -7,7 +7,6 @@
     <string name="title_accuracy">Preferred accuracy: %s meters</string>
     <string name="title_timeout">Location time-out: %s seconds</string>
     <string name="title_known">Last known location: %s</string>
-    <string name="title_download">Download geoid correction file</string>
     <string name="title_check">Location settings</string>
     <string name="title_version">Version</string>
     <string name="title_author">Author</string>
@@ -19,7 +18,6 @@
     <string name="summary_accuracy">Stop acquiring a location after a location with the selected accuracy has been acquired</string>
     <string name="summary_timeout">Always stop acquiring a location after the selected time</string>
     <string name="summary_known">Use the last known location if no location can be acquired and when the last known location is newer than the selected time</string>
-    <string name="summary_download">Tap to download EGM96 geoid height correction file (2,076,480 bytes)</string>
     <string name="summary_check">Tap to open the Android location settings</string>
     <string name="summary_author">Marcel Bokhorst (M66B)\nTap for details (will start the browser)</string>
     <string name="summary_license">GNU General Public License version 3\nTap for details (will start the browser)</string>
