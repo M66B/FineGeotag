@@ -11,6 +11,7 @@
     <string name="title_version">Versie</string>
     <string name="title_author">Auteur</string>
     <string name="title_license">Licentie</string>
+    <string name="title_egm96">EGM96</string>
 
     <string name="summary_enabled">Zet geotaggen van uw camera-applicatie uit om interferentie te voorkomen</string>
     <string name="summary_toast">Toon een popup met een miniatuur en een reverse geocoded adres (wanneer beschikbaaar) na het geotaggen van een foto</string>
@@ -21,6 +22,7 @@
     <string name="summary_check">Tap om de Android locatie-instellingen te openen</string>
     <string name="summary_author">Marcel Bokhorst (M66B)\nTap voor details (zal de browser starten)</string>
     <string name="summary_license">GNU General Public License version 3\nTap voor details (zal de browser starten)</string>
+    <string name="summary_egm96">Copyright (C) 2001 United States Government as represented by the Administrator of the National Aeronautics and Space Administration.\nAll Rights Reserved.\nTap voor meer informatie (zal de browser starten)</string>
 
     <string name="msg_geotagged">Geotagged</string>
     <string name="msg_geocoder">Geocoder:</string>
