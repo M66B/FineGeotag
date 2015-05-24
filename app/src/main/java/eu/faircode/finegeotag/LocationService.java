@@ -79,14 +79,15 @@ public class LocationService extends IntentService {
                 return;
 
             // Correct altitude
-            try {
-                double offset = getEGM96Offset(location, this);
-                Log.w(TAG, "Offset=" + offset);
-                location.setAltitude(location.getAltitude() - offset);
-                Log.w(TAG, "Corrected location=" + location);
-            } catch (IOException ex) {
-                Log.w(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
-            }
+            if (LocationManager.GPS_PROVIDER.equals(location.getProvider()))
+                try {
+                    double offset = getEGM96Offset(location, this);
+                    Log.w(TAG, "Offset=" + offset);
+                    location.setAltitude(location.getAltitude() - offset);
+                    Log.w(TAG, "Corrected location=" + location);
+                } catch (IOException ex) {
+                    Log.w(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
+                }
 
             // Get location preferences
             boolean pref_altitude = prefs.getBoolean(ActivitySettings.PREF_ALTITUDE, ActivitySettings.DEFAULT_ALTITUDE);
