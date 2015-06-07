@@ -1,0 +1,30 @@
+
+<resources>
+    <string name="app_name">FineGeotag</string>
+
+    <string name="title_enabled">Geotagging aktiviert</string>
+    <string name="title_toast">Popup beim erfolgreichen Geotagging</string>
+    <string name="title_altitude">Höhe bevorzugen</string>
+    <string name="title_accuracy">Bevorzugte Genauichkeit: %s Meter</string>
+    <string name="title_timeout">Standortsuche Auszeit: %s Sekunden</string>
+    <string name="title_known">Letzter bekannter Ort: %s</string>
+    <string name=“title_check">Standorteinstellungen</string>
+    <string name="title_version">Version</string>
+    <string name="title_author">Urheber</string>
+    <string name="title_license">Lizenz</string>
+
+    <string name="summary_enabled">Stellen Sie die Standort Option in ihrer Kamera App aus, um Störungen zu vermeiden</string>
+    <string name="summary_toast">Zeige eine Vorschau und eine geocodierte Adresse (falls verfügbar) nach erfolgreichem Geotagging des Photos</string>
+    <string name=“summary_altitude">Bevorzuge ungenauen Standort mit Höheninformationen über einen genaueren Standort ohne Höheninformationen</string>
+    <string name=“summary_accuracy">Beende die Standortsuche nach dem ein Standort mit der bevorzugten Genauichkeit gefunden wurde</string>
+    <string name=“summary_timeout">Beende immer die Standortsuche nach der vorgegeben Zeit</string>
+    <string name=“summary_known">Benutze den letzten bekannten Standort falls kein Standort ermittelt werden kann und wenn der letzte bekannte Standort in dem gegebenen Zeitrahmen fällt</string>
+    <string name=“summary_check">Drücke um die Android Standorteinstellungen zu öffnen</string>
+    <string name="summary_author">Marcel Bokhorst (M66B)\nFür Details drücken (öffnet den Browser)</string>
+    <string name="summary_license">GNU General Public License version 3\nFür Details drücken (öffnet den Browser)</string>
+
+    <string name="msg_geotagged">Geotagged</string>
+    <string name="msg_geocoder">Geocoder:</string>
+    <string name="msg_yes">Ja</string>
+    <string name="msg_no">Nein</string>
+</resources>
