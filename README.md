@@ -19,6 +19,8 @@ Works only for JPEG pictures.
 
 Works on Android 4.0 (Ice Cream Sandwich) and later.
 
+You can ask questions [here](http://forum.xda-developers.com/android/apps-games/20150508-fine-geotag-t3103110).
+
 # Permissions
 
 *ACCESS_COARSE/FINE_LOCATION*: to acquire locations for geotagging
