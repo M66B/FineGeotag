@@ -244,6 +244,8 @@ public class LocationService extends IntentService {
             sendBroadcast(intent);
         } catch (IOException ex) {
             Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
+        } catch (Throwable ex) {
+            Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
         }
     }
 
