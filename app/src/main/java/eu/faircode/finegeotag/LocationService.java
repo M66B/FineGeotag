@@ -232,6 +232,12 @@ public class LocationService extends IntentService {
         try {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+            // Check if image still exists
+            if (!new File(image_filename).exists()) {
+                Log.w(TAG, "File deleted image=" + image_filename);
+                return;
+            }
+
             // Write Exif
             ExifInterfaceEx exif = new ExifInterfaceEx(image_filename);
             exif.setLocation(location);
