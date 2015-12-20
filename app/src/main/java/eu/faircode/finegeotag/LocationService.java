@@ -301,18 +301,18 @@ public class LocationService extends IntentService {
     }
 
     private static List<String> reverseGeocode(Location location, Context context) {
-        List<String> listline = new ArrayList<>();
+        List<String> listLine = new ArrayList<>();
         if (location != null && Geocoder.isPresent())
             try {
                 Geocoder geocoder = new Geocoder(context);
                 List<Address> listPlace = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                 if (listPlace != null && listPlace.size() > 0) {
                     for (int l = 0; l < listPlace.get(0).getMaxAddressLineIndex(); l++)
-                        listline.add(listPlace.get(0).getAddressLine(l));
+                        listLine.add(listPlace.get(0).getAddressLine(l));
                 }
             } catch (IOException ignored) {
             }
-        return listline;
+        return listLine;
     }
 
     private void notify(final String image_filename, final String text) {

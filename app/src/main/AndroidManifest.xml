@@ -3,6 +3,9 @@
     package="eu.faircode.finegeotag">
 
     <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
         android:name="android.hardware.location"
         android:required="true" />
 
@@ -10,10 +13,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -41,5 +40,4 @@
             android:name=".LocationService"
             android:enabled="true" />
     </application>
-
 </manifest>
