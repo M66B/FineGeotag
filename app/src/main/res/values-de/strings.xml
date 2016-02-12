@@ -2,10 +2,10 @@
     <string name="app_name">FineGeotag</string>
 
     <string name="title_enabled">Geotagging aktiviert</string>
-    <string name="title_toast">Popup beim erfolgreichen Geotagging</string>
+    <string name="title_toast">Popup anzeigen beim erfolgreichen Geotagging</string>
     <string name="title_altitude">Höhe bevorzugen</string>
-    <string name="title_accuracy">Bevorzugte Genauichkeit: %s Meter</string>
-    <string name="title_timeout">Standortsuche Auszeit: %s Sekunden</string>
+    <string name="title_accuracy">Bevorzugte Genauigkeit: %s Meter</string>
+    <string name="title_timeout">Standortsuche beenden nach: %s Sekunden</string>
     <string name="title_known">Letzter bekannter Ort: %s</string>
     <string name="title_check">Standorteinstellungen</string>
     <string name="title_version">Version</string>
@@ -13,16 +13,16 @@
     <string name="title_license">Lizenz</string>
     <string name="title_egm96">EGM96</string>
 
-    <string name="summary_enabled">Stellen Sie die Standort Option in ihrer Kamera App aus, um Störungen zu vermeiden</string>
-    <string name="summary_toast">Zeige eine Vorschau und eine geocodierte Adresse (falls verfügbar) nach erfolgreichem Geotagging des Photos</string>
+    <string name="summary_enabled">Deaktivieren Sie die Option zur Standortspeicherung in ihrer Kamera-App, um Störungen beim Geotagging zu vermeiden</string>
+    <string name="summary_toast">Zeige eine Vorschau und (falls verfügbar) eine geocodierte Adresse nach erfolgreichem Geotagging des Fotos</string>
     <string name="summary_altitude">Bevorzuge ungenauen Standort mit Höheninformationen über einen genaueren Standort ohne Höheninformationen</string>
-    <string name="summary_accuracy">Beende die Standortsuche nach dem ein Standort mit der bevorzugten Genauichkeit gefunden wurde</string>
-    <string name="summary_timeout">Beende immer die Standortsuche nach der vorgegeben Zeit</string>
-    <string name="summary_known">Benutze den letzten bekannten Standort falls kein Standort ermittelt werden kann und wenn der letzte bekannte Standort in dem gegebenen Zeitrahmen fällt</string>
-    <string name="summary_check">Drücke um die Android Standorteinstellungen zu öffnen</string>
-    <string name="summary_author">Marcel Bokhorst (M66B)\nFür Details drücken (öffnet den Browser)</string>
-    <string name="summary_license">GNU General Public License version 3\nFür Details drücken (öffnet den Browser)</string>
-    <string name="summary_egm96">Copyright (C) 2001 United States Government as represented by the Administrator of the National Aeronautics and Space Administration.\nAll Rights Reserved.\nFür Details drücken (öffnet den Browser)</string>
+    <string name="summary_accuracy">Beende die Standortsuche, nachdem ein Standort mit der bevorzugten Genauigkeit gefunden wurde</string>
+    <string name="summary_timeout">Beende die Standortsuche automatisch nach der vorgegebenen Zeit (auch wenn bis dahin kein Standort ermittelt werden konnte)</string>
+    <string name="summary_known">Benutze den letzten bekannten Standort, falls kein Standort ermittelt werden kann und der letzte bekannte Standort in den vorgegebenen Zeitraum fällt</string>
+    <string name="summary_check">Berühren, um die Standorteinstellungen von Android zu öffnen</string>
+    <string name="summary_author">Marcel Bokhorst (M66B)\nFür Details berühren (öffnet den Browser)</string>
+    <string name="summary_license">GNU General Public License version 3\nFür Details berühren (öffnet den Browser)</string>
+    <string name="summary_egm96">Copyright (C) 2001 United States Government as represented by the Administrator of the National Aeronautics and Space Administration.\nAll Rights Reserved.\nFür Details berühren (öffnet den Browser)</string>
 
     <string name="msg_geotagged">Geotagged</string>
     <string name="msg_geocoder">Geocoder:</string>
