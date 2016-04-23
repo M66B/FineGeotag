@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">FineGeotag</string>
+
+    <string name="title_enabled">ジオタギングを有効にする</string>
+    <string name="title_toast">ジオタギング後にポップアップ</string>
+    <string name="title_altitude">高度を好む</string>
+    <string name="title_accuracy">お好みの精度: %s メートル</string>
+    <string name="title_timeout">位置タイムアウト: %s 秒</string>
+    <string name="title_known">前回既知の位置: %s</string>
+    <string name="title_check">位置設定</string>
+    <string name="title_version">バージョン</string>
+    <string name="title_author">作者</string>
+    <string name="title_license">ライセンス</string>
+    <string name="title_egm96">EGM96</string>
+
+    <string name="summary_enabled">競合を防止するためにお使いのカメラアプリのジオタギングを無効にします</string>
+    <string name="summary_toast">写真にジオタギングした後で、サムネイルと一緒に (利用可能な場合) 逆引きした住所をポップアップを表示します</string>
+    <string name="summary_altitude">高度情報がなくより正確な位置よりも、高度情報がありそれほど正確ではない位置を好みます</string>
+    <string name="summary_accuracy">選択した精度で位置を取得した後に、位置の取得を停止します</string>
+    <string name="summary_timeout">選択された時間の後に、常に位置の取得を停止します</string>
+    <string name="summary_known">位置が取得できず、前回の既知の位置が選択した時間よりも新しい場合、前回の既知の位置を使用します</string>
+    <string name="summary_check">タップすると Android 位置設定を開きます</string>
+    <string name="summary_author">Marcel Bokhorst (M66B)\n詳細はタップしてください (ブラウザーを開きます)</string>
+    <string name="summary_license">GNU General Public License version 3\n詳細はタップしてください (ブラウザーを開きます)</string>
+    <string name="summary_egm96">Copyright (C) 2001 United States Government as represented by the Administrator of the National Aeronautics and Space Administration.\nAll Rights Reserved.\nさらに詳しい情報はタップしてください (ブラウザーを開きます)</string>
+
+    <string name="msg_geotagged">ジオタギングしました</string>
+    <string name="msg_geocoder">ジオコーダー:</string>
+    <string name="msg_yes">はい</string>
+    <string name="msg_no">いいえ</string>
+</resources>

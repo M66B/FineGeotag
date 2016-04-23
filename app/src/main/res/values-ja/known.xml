@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="known_values">
+        <item>0</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>240</item>
+        <item>480</item>
+    </string-array>
+    <string-array name="known_names">
+        <item>なし</item>
+        <item>15 分</item>
+        <item>30 分</item>
+        <item>1 時間</item>
+        <item>2 時間</item>
+        <item>4 時間</item>
+        <item>8 時間</item>
+    </string-array>
+</resources>
