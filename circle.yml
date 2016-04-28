@@ -147,12 +147,12 @@ test:
         background: true
     - sleep 60 # let the emulator settle down first
 
-    - fb-adb shell am start -n chat.tox.antox/chat.tox.antox.activities.LoginActivity
+    - fb-adb shell am start -n eu.faircode.finegeotag/eu.faircode.finegeotag.ActivitySettings
     - sleep 60
 
-    # - fb-adb shell am force-stop chat.tox.antox
+    # - fb-adb shell am force-stop eu.faircode.finegeotag
 
-    - died_count=`cat $CIRCLE_ARTIFACTS/adb_out.txt|grep 'Process. chat.tox.antox, PID.'|wc -l|tr -d ' '` ; if [ $died_count -gt 1 ]; then echo "chat.tox.antox crashed"; exit 1; fi
+    - died_count=`cat $CIRCLE_ARTIFACTS/adb_out.txt|grep 'Process. eu.faircode.finegeotag, PID.'|wc -l|tr -d ' '` ; if [ $died_count -gt 1 ]; then echo "chat.tox.antox crashed"; exit 1; fi
 
     - import -window root $CIRCLE_ARTIFACTS/capture002.png # get proof that the app is running
 
