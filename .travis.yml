@@ -1,0 +1,20 @@
+# travis build for k3b-geoHelper
+language: android
+android:
+  components:
+    # https://github.com/travis-ci/travis-ci/issues/5036
+    - tools
+
+    # values in gradle.properties and .travis must be the same
+    - build-tools-23.0.2
+    - android-23
+
+    - add-on
+    - extra
+
+before_install:
+# http://stackoverflow.com/questions/33820638/travis-yml-gradlew-permission-denied
+ - chmod +x gradlew
+ 
+script:
+  - ./gradlew assemble 
