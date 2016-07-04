@@ -3,6 +3,8 @@ package eu.faircode.finegeotag;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +17,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -242,7 +245,21 @@ public class LocationService extends IntentService {
             ExifInterfaceEx exif = new ExifInterfaceEx(image_filename);
             exif.setLocation(location);
             exif.saveAttributes();
-            Log.w(TAG, "Exif updated location=" + location + " image=" + image_filename);
+			exif = null;
+			
+			int updateCount = 0;
+			try {
+				ContentValues values = new ContentValues();
+				values.put(MediaStore.Images.Media.LATITUDE, location.getLatitude());
+				values.put(MediaStore.Images.Media.LONGITUDE, location.getLongitude());
+                // altitude not supported
+				// values.put(MediaStore.Images.Media.ALTITUDE, location.getAltitude());
+				ContentResolver resolver = this.getContentResolver();
+				updateCount = resolver.update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values, MediaStore.Images.Media.DATA + " = ?", new String[]{image_filename});
+			} catch (Exception ex) {
+			}
+
+            Log.w(TAG, "Exif updated location=" + location + "; image=" + image_filename + ", MEDIA-DB-Update=" + updateCount);
 
             // Reverse geocode
             if (prefs.getBoolean(ActivitySettings.PREF_TOAST, ActivitySettings.DEFAULT_TOAST)) {
