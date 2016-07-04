@@ -1,6 +1,12 @@
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
+
+# Intellij project files
+*.iml
+*.ipr
+*.iws
+.idea/
+
 .DS_Store
 /build
+/gradle-app.setting
